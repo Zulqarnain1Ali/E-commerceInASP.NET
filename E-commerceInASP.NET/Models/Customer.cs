@@ -2,6 +2,14 @@
 {
     public class Customer
     {
-        public int Cus { get; set; }
+        public int Customer_id { get; set; }
+        public string Customer_Name { get; set; }
+        public string Customer_Gender { get; set; }
+        public string Customer_Email { get; set; }
+        public string Customer_Password { get; set; }
+        public string Customer_Image { get; set; }
+        public string Customer_Country { get; set; }
+        public string Customer_City { get; set; }
+        public string Customer_Address { get; set; }
     }
 }
