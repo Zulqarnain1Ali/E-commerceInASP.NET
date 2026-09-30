@@ -1,9 +1,13 @@
-﻿namespace E_commerceInASP.NET.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace E_commerceInASP.NET.Models
 {
     public class Customer
     {
+        [Key]
         public int Customer_id { get; set; }
         public string Customer_Name { get; set; }
+        public string Customer_Phone { get; set; }
         public string Customer_Gender { get; set; }
         public string Customer_Email { get; set; }
         public string Customer_Password { get; set; }
