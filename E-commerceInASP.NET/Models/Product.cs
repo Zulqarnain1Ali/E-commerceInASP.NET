@@ -10,6 +10,6 @@ namespace E_commerceInASP.NET.Models
         public string Product_Price { get; set; }
         public string Product_Image { get; set; }
         public string Product_Description { get; set; }
-        public int Cat_id { get; set; }
+        public int Cat_Id { get; set; }
     }
 }

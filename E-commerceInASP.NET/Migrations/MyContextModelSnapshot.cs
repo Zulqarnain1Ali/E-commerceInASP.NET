@@ -50,6 +50,23 @@ namespace E_commerceInASP.NET.Migrations
                     b.ToTable("tbl_admin");
                 });
 
+            modelBuilder.Entity("E_commerceInASP.NET.Models.Category", b =>
+                {
+                    b.Property<int>("Key")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Key"));
+
+                    b.Property<string>("Category_Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Key");
+
+                    b.ToTable("tbl_category");
+                });
+
             modelBuilder.Entity("E_commerceInASP.NET.Models.Customer", b =>
                 {
                     b.Property<int>("Customer_id")
