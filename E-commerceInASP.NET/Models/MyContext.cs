@@ -13,5 +13,7 @@ namespace E_commerceInASP.NET.Models
         public DbSet<Category> tbl_category { get; set; }
         public DbSet<Cart> tbl_cart { get; set; }
         public DbSet<Feedback> tbl_feedback { get; set; }
+        public DbSet<Product> tbl_product { get; set; }
+        public DbSet<FAQ> tbl_faq { get; set; }
     }
 }
