@@ -6,6 +6,8 @@ namespace E_commerceInASP.NET.Models
     {
         [Key]
         public int admin_id { get; set; }
+
+        [Display(Name = "Name")]
         public string admin_name { get; set; }
         public string admin_email { get; set; }
         public string admin_password { get; set; }
