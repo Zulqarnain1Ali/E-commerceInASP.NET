@@ -9,8 +9,14 @@ namespace E_commerceInASP.NET.Models
 
         [Display(Name = "Name")]
         public string admin_name { get; set; }
+
+        [Display(Name = "Email")]
         public string admin_email { get; set; }
+
+        [Display(Name = "Password")]
         public string admin_password { get; set; }
+
+        [Display(Name = "Profile Image")]
         public string admin_image { get; set; }
     }
 }
