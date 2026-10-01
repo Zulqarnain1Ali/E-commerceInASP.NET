@@ -13,8 +13,25 @@ namespace E_commerceInASP.NET.Controllers
         }
         public IActionResult Index()
         {
-            var adminList = context.tbl_admin.ToList();
-            return View(adminList);
+            return View();
+        }
+
+        public IActionResult Admin_Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Admin_Login(string admin_email, string admin_password)
+        {
+            var admin = context.tbl_admin.FirstOrDefault(a => a.admin_email == admin_email && a.admin_password == admin_password);
+
+            if (admin != null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewBag.Error = "Invalid Credentials";
+            return View();
         }
     }
 }

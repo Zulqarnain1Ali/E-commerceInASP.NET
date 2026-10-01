@@ -1,0 +1,37 @@
+﻿@model E_commerceInASP.NET.Models.Admin
+
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-4">
+            <h3 class="text-center mb-4">Login</h3>
+
+            <form asp-action="Admin_Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="admin_email" class="form-label"></label>
+                    <input asp-for="admin_email" type="email" class="form-control" placeholder="name@example.com" />
+                    <span asp-validation-for="admin_email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="admin_password" class="form-label"></label>
+                    <input asp-for="admin_password" type="password" class="form-control" placeholder="Enter password" />
+                    <span asp-validation-for="admin_password" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Sign In</button>
+            </form>
+            
+            @if (ViewBag.Error != null)
+            {
+                <div class="text-danger mt-2">@ViewBag.Error</div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
