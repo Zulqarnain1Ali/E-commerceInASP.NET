@@ -24,6 +24,12 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult Admin_Login(string admin_email, string admin_password)
         {
+            
+
+            if(string.IsNullOrEmpty(admin_email) || string.IsNullOrEmpty(admin_password))
+            {
+                ModelState.AddModelError("", "Email and password cant be empty.");
+            }
             var admin = context.tbl_admin.FirstOrDefault(a => a.admin_email == admin_email && a.admin_password == admin_password);
 
             if (admin != null)
