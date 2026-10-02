@@ -40,6 +40,7 @@ namespace E_commerceInASP.NET.Controllers
 
             if (admin != null)
             {
+                //cookies code
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, admin.admin_email),
@@ -52,7 +53,7 @@ namespace E_commerceInASP.NET.Controllers
                 {
                     IsPersistent = rememberMe,
                     ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(7) : null
-                };
+                }; 
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
@@ -64,10 +65,10 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        //public async Task<IActionResult> Logout()
-        //{
-        //    await HttpContext.SignOutAsync("Cookies"); // Clears the authentication cookie
-        //    return RedirectToAction("Admin_Login");     // Sends them back to the login page
-        //}
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("Cookies"); // Clears the authentication cookie
+            return RedirectToAction("Admin_Login");     // Sends them back to the login page
+        }
     }
 }
