@@ -11,17 +11,24 @@
 <br /> 
 <br /> 
 
-<div class="mb-3">
-    <label class="form-label">Admin Name</label>
-    <input asp-for="admin_name" class="form-control" />
-</div>
 
-<form method="post" asp-action="Profile" enctype="mmultipart/form-data">
+
+<form method="post" asp-action="Profile" enctype="multipart/form-data">
     <input type="hidden" asp-for="admin_id" />
+
+    <div class="mb-3">
+        <label class="form-label">Admin Name</label>
+        <input asp-for="admin_name" class="form-control" />
+    </div>
 
     <div class="mb-3">
         <label class="form-label">Email Address</label>
         <input asp-for="admin_email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Profile Picture</label>
+        <input type="file" name="file" class="form-control" />
     </div>
 
 
@@ -29,10 +36,11 @@
     {
         <div class="mb-3">
             <label class="form-label">Current Picture</label><br />
-            <img src="@Model.admin_image" width="80" height="80" class="rounded-circle" alt="Admin Profile" />
+            <img src="@Model.admin_image" width="80" height="80" class="rounded-circle" alt="Profile Picture" />
         </div>
     }
 
+    <button type="submit" class="btn btn-primary">Save Changes</button>
 
 </form>
 
