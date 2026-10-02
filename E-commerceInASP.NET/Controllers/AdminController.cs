@@ -1,8 +1,10 @@
 ﻿using E_commerceInASP.NET.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+
 
 namespace E_commerceInASP.NET.Controllers
 {
@@ -14,6 +16,8 @@ namespace E_commerceInASP.NET.Controllers
         {
             this.context = context;
         }
+
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -41,7 +45,8 @@ namespace E_commerceInASP.NET.Controllers
                     new Claim(ClaimTypes.Name, admin.admin_email),
                     new Claim("AdminId", admin.admin_id.ToString())
                 };
-                var claimsIdentity = new ClaimIdentity(claims, CookieAuthenticationDefaults, AuthenticationScheme);
+                //var claimsIdentity = new ClaimIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
 
                 var authProperties = new AuthenticationProperties
                 {
@@ -57,5 +62,12 @@ namespace E_commerceInASP.NET.Controllers
             ViewBag.Error = "Invalid Credentials";
             return View();
         }
+
+
+        //public async Task<IActionResult> Logout()
+        //{
+        //    await HttpContext.SignOutAsync("Cookies"); // Clears the authentication cookie
+        //    return RedirectToAction("Admin_Login");     // Sends them back to the login page
+        //}
     }
 }
