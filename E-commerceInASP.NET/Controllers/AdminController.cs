@@ -73,7 +73,7 @@ namespace E_commerceInASP.NET.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
             var adminIdString = User.FindFirst("AdminId")?.Value;
             if (adminIdString == null) return RedirectToAction("Admin_Login");
@@ -85,12 +85,39 @@ namespace E_commerceInASP.NET.Controllers
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Profile(Admin model)
+        public IActionResult Profile(Admin model, IFormFile file)
         {
             var admin = context.tbl_admin.FirstOrDefault(a => a.admin_id == model.admin_id);
             if (admin != null)
             {
                 admin.admin_email = model.admin_email;
+
+                // Check if the user uploaded a file
+                if (file != null && file.Length > 0)
+                {
+                    // Generate a unique filename to avoid naming conflicts
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+                    // Define the folder path inside wwwroot
+                    string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/admin");
+
+                    // Create the directory if it doesn't exist yet
+                    if (!Directory.Exists(uploadDir))
+                    {
+                        Directory.CreateDirectory(uploadDir);
+                    }
+
+                    string filePath = Path.Combine(uploadDir, fileName);
+
+                    // Save the file physically to the server
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    // Save the relative path string into your database model property
+                    admin.admin_image = "/images/admin/" + fileName;
+                }
                 context.SaveChanges();
             }
             ViewBag.Message = "Profile updated successfully";
