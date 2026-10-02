@@ -12,7 +12,7 @@
                 <div class="mb-3">
                     <label asp-for="admin_email" class="form-label"></label>
                     <input asp-for="admin_email" type="email" class="form-control" placeholder="name@example.com" />
-                    <span asp-validation-for="admin_email" class="text-danger small"></span> 
+                    <span asp-validation-for="admin_email" class="text-danger small"></span>
                 </div>
 
                 <div class="mb-3">
@@ -21,9 +21,14 @@
                     <span asp-validation-for="admin_password" class="text-danger small"></span>
                 </div>
 
+                <div class="form-check mb-3">
+                    <input type="checkbox" name="rememberMe" value="true" class="form-check-input" id="rememberMeCheck" />
+                    <label class="form-check-label" for="rememberMeCheck">Remember Me</label>
+                </div>
+
                 <button type="submit" class="btn btn-primary w-100">Sign In</button>
             </form>
-            
+
             @if (ViewBag.Error != null)
             {
                 <div class="text-danger mt-2">@ViewBag.Error</div>
