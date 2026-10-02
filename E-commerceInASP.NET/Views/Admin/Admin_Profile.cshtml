@@ -1,4 +1,4 @@
-﻿@model E-commerceInASP.NET.Models.Admin
+﻿@model E_commerceInASP.NET.Models.Admin
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -12,7 +12,43 @@
 <br /> 
 
 
-<form method="post">
-    <input asp-for="admin_email" type="email" class="form-control" placeholder="name@example.com" />
+<form method="post" asp-action="Profile" enctype="mmultipart/form-data">
+    <input type="hidden" asp-for="admin_id" />
 
+    <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input asp-for="admin_email" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Profile Picture</label>
+        <input type="file" name="file" class="form-control" />
+    </div>
 </form>
+
+
+
+@* 
+
+<form asp-action="Profile" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="admin_email" class="form-label"></label>
+        <input asp-for="admin_email" type="email" class="form-control" placeholder="name@example.com" />
+        <span asp-validation-for="admin_email" class="text-danger small"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="admin_password" class="form-label"></label>
+        <input asp-for="admin_password" type="password" class="form-control" placeholder="Enter password" />
+        <span asp-validation-for="admin_password" class="text-danger small"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input type="checkbox" name="rememberMe" value="true" class="form-check-input" id="rememberMeCheck" />
+        <label class="form-check-label" for="rememberMeCheck">Remember Me</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Sign In</button>
+</form> *@
