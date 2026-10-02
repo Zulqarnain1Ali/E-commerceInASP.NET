@@ -90,7 +90,7 @@ namespace E_commerceInASP.NET.Controllers
             var admin = context.tbl_admin.FirstOrDefault(a => a.admin_id == model.admin_id);
             if (admin != null)
             {
-                admin.admin_email = model.admin_email;
+                //admin.admin_email = model.admin_email;
 
                 // Check if the user uploaded a file
                 if (file != null && file.Length > 0)
@@ -118,6 +118,18 @@ namespace E_commerceInASP.NET.Controllers
                     // Save the relative path string into your database model property
                     admin.admin_image = "/images/admin/" + fileName;
                 }
+
+                // Update basic info
+                admin.admin_email = model.admin_email;
+                admin.admin_name = model.admin_name;
+
+                // Only update the password if the admin typed a new one
+                if (!string.IsNullOrEmpty(model.admin_password))
+                {
+                    // Note: If you are hashing passwords with BCrypt or SHA256, hash it here before saving!
+                    admin.admin_password = model.admin_password;
+                }
+
                 context.SaveChanges();
             }
             ViewBag.Message = "Profile updated successfully";
