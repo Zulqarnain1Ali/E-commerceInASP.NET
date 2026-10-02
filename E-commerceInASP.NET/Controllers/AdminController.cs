@@ -57,8 +57,9 @@ namespace E_commerceInASP.NET.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
+                //cookies code ended
                 return RedirectToAction("Index");
-
+            
             }
             ViewBag.Error = "Invalid Credentials";
             return View();
@@ -70,5 +71,31 @@ namespace E_commerceInASP.NET.Controllers
             await HttpContext.SignOutAsync("Cookies"); // Clears the authentication cookie
             return RedirectToAction("Admin_Login");     // Sends them back to the login page
         }
+
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            var adminIdString = User.FindFirst("AdminId")?.Value;
+            if (adminIdString == null) return RedirectToAction("Admin_Login");
+
+            int adminId = int.Parse(adminIdString);
+            var admin = context.tbl_admin.FirstOrDefault(a => a.admin_id == adminId);
+
+            return View(admin);
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Profile(Admin model)
+        {
+            var admin = context.tbl_admin.FirstOrDefault(a => a.admin_id == model.admin_id);
+            if (admin != null)
+            {
+                admin.admin_email = model.admin_email;
+                context.SaveChanges();
+            }
+            ViewBag.Message = "Profile updated successfully";
+            return RedirectToAction("Index");
+        }
+
     }
 }
