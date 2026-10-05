@@ -159,7 +159,7 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult updateCustomer(Customer customer, IFormFile file)
         {
-
+            ModelState.Remove("Customer_Password");
             var existingCustomer = context.tbl_customer.FirstOrDefault(a => a.Customer_id == customer.Customer_id);
 
             if (file != null && file.Length > 0)
