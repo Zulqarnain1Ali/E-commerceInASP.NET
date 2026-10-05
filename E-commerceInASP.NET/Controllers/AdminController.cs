@@ -156,11 +156,54 @@ namespace E_commerceInASP.NET.Controllers
             return View(context.tbl_customer.Find(id));
         }
 
-        //[HttpPost]
-        //public IActionResult updateCustomer(int id)
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        public IActionResult updateCustomer(Customer customer, IFormFile file)
+        {
+
+            var existingCustomer = context.tbl_customer.FirstOrDefault(a => a.Customer_id == customer.Customer_id);
+
+            if (file != null && file.Length > 0)
+            {
+                // Generate a unique filename to avoid naming conflicts
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+                // Define the folder path inside wwwroot
+                string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/customer");
+
+                // Create the directory if it doesn't exist yet
+                if (!Directory.Exists(uploadDir))
+                {
+                    Directory.CreateDirectory(uploadDir);
+                }
+
+                string filePath = Path.Combine(uploadDir, fileName);
+
+                // Save the file physically to the server
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+
+                // Save the relative path string into your database model property
+                existingCustomer.Customer_Image = "/images/customer/" + fileName;
+            }
+            
+            existingCustomer.Customer_Name = customer.Customer_Name;
+            existingCustomer.Customer_Email = customer.Customer_Email;
+            existingCustomer.Customer_Phone = customer.Customer_Phone;
+            existingCustomer.Customer_Gender = customer.Customer_Gender;
+            existingCustomer.Customer_Country = customer.Customer_Country;
+            existingCustomer.Customer_City = customer.Customer_City;
+            existingCustomer.Customer_Address = customer.Customer_Address;
+
+            if (!string.IsNullOrEmpty(customer.Customer_Password))
+            {
+                existingCustomer.Customer_Password = customer.Customer_Password;
+            }
+
+            context.SaveChanges();
+            return RedirectToAction("fetchCustomer");
+        }
 
         public IActionResult deleteCustomer(int id)
         {
