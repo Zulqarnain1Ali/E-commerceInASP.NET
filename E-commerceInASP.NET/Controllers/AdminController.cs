@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace E_commerceInASP.NET.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly MyContext context;
@@ -17,18 +18,20 @@ namespace E_commerceInASP.NET.Controllers
             this.context = context;
         }
 
-        [Authorize]
+        
         public IActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Admin_Login()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Admin_Login(string admin_email, string admin_password, bool rememberMe)
         {
             if(string.IsNullOrEmpty(admin_email) || string.IsNullOrEmpty(admin_password))
@@ -72,7 +75,7 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("Admin_Login");     // Sends them back to the login page
         }
 
-        [Authorize]
+       
         public IActionResult Profile()
         {
             var adminIdString = User.FindFirst("AdminId")?.Value;
@@ -85,7 +88,6 @@ namespace E_commerceInASP.NET.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Profile(Admin model, IFormFile file)
         {
             var admin = context.tbl_admin.FirstOrDefault(a => a.admin_id == model.admin_id);
@@ -150,10 +152,15 @@ namespace E_commerceInASP.NET.Controllers
         }
 
         public IActionResult updateCustomer(int id)
-        {
-            
-            return View();
+        {   
+            return View(context.tbl_customer.Find(id));
         }
+
+        //[HttpPost]
+        //public IActionResult updateCustomer(int id)
+        //{
+        //    return View();
+        //}
 
         public IActionResult deleteCustomer(int id)
         {

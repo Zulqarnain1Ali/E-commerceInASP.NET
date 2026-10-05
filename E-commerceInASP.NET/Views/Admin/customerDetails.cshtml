@@ -34,8 +34,8 @@
                         </div>
                     </div>
                     <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center px-4 pb-3">
-                        <a asp-action="EditCustomer" asp-route-id="@Model.Customer_id" class="btn btn-outline-primary btn-sm">Update</a>
-                        <a asp-action="DeleteCustomer" asp-route-id="@Model.Customer_id" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?');">Remove</a>
+                        <a asp-action="updateCustomer" asp-route-id="@Model.Customer_id" class="btn btn-outline-primary btn-sm">Update</a>
+                        <a asp-action="DeleteCustomer" asp-route-id="@Model.Customer_id" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</a>
                     </div>
                 </div>
             </div>
