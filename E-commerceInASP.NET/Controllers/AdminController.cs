@@ -157,7 +157,7 @@ namespace E_commerceInASP.NET.Controllers
         }
 
         [HttpPost]
-        public IActionResult updateCustomer(Customer customer, IFormFile file)
+        public IActionResult updateCustomer(Customer customer, IFormFile file, string? newPassword)
         {
             ModelState.Remove("Customer_Password");
             var existingCustomer = context.tbl_customer.FirstOrDefault(a => a.Customer_id == customer.Customer_id);
@@ -196,9 +196,9 @@ namespace E_commerceInASP.NET.Controllers
             existingCustomer.Customer_City = customer.Customer_City;
             existingCustomer.Customer_Address = customer.Customer_Address;
 
-            if (!string.IsNullOrEmpty(customer.Customer_Password))
+            if (!string.IsNullOrEmpty(newPassword))
             {
-                existingCustomer.Customer_Password = customer.Customer_Password;
+                existingCustomer.Customer_Password = newPassword;
             }
 
             context.SaveChanges();
