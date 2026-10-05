@@ -1,0 +1,52 @@
+﻿@model E_commerceInASP.NET.Models.Customer
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Customer Profile Details</h2>
+        <a asp-action="fetchCustomer" class="btn btn-outline-secondary btn-sm">Back to Summary View</a>
+    </div>
+    <hr />
+
+    <div class="row justify-content-center">
+        @if (Model != null)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <!-- Small Profile Image at the Top -->
+                        <div class="mb-3">
+                            <img src="~/images/admin/@Model.Customer_Image" alt="Customer Image" class="rounded-circle shadow-sm" style="width: 80px; height: 80px; object-fit: cover;" />
+                        </div>
+
+                        <h4 class="card-title text-primary mb-1">@Model.Customer_Name</h4>
+                        <h6 class="card-subtitle mb-3 text-muted">@Model.Customer_Email</h6>
+                        <hr />
+                        
+                        <div class="text-start px-3">
+                            <p class="card-text mb-2"><strong>Phone:</strong> @Model.Customer_Phone</p>
+                            <p class="card-text mb-2"><strong>Gender:</strong> @Model.Customer_Gender</p>
+                            <p class="card-text mb-2"><strong>Location:</strong> @Model.Customer_City, @Model.Customer_Country</p>
+                            <p class="card-text mb-3"><strong>Address:</strong> @Model.Customer_Address</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center px-4 pb-3">
+                        <a asp-action="EditCustomer" asp-route-id="@Model.Customer_id" class="btn btn-outline-primary btn-sm">Update</a>
+                        <a asp-action="DeleteCustomer" asp-route-id="@Model.Customer_id" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?');">Remove</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    Customer not found.
+                </div>
+            </div>
+        }
+    </div>
+</div>

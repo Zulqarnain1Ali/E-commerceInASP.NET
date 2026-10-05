@@ -83,6 +83,7 @@ namespace E_commerceInASP.NET.Controllers
 
             return View(admin);
         }
+
         [HttpPost]
         [Authorize]
         public IActionResult Profile(Admin model, IFormFile file)
@@ -136,5 +137,36 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public IActionResult fetchCustomer()
+        {
+            return View(context.tbl_customer.ToList());
+        }
+
+        public IActionResult customerDetails(int id)
+        {
+            var customer = context.tbl_customer.FirstOrDefault(c => c.Customer_id == id);
+            return View(customer);
+        }
+
+        public IActionResult updateCustomer(int id)
+        {
+            
+            return View();
+        }
+
+        public IActionResult deleteCustomer(int id)
+        {
+            var customer = context.tbl_customer.Find(id);
+
+            if (customer != null)
+            {
+                context.tbl_customer.Remove(customer);
+                context.SaveChanges();
+                TempData["Message"] = "Customer deleted successfully!";
+            }
+            
+            return RedirectToAction("fetchCustomer");
+        }
     }
 }

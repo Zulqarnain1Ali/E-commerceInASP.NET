@@ -1,0 +1,55 @@
+﻿@model IEnumerable<E_commerceInASP.NET.Models.Customer>
+
+@{
+    ViewData["Title"] = "All Customers";
+}
+
+<div class="container mt-4">
+    <h2>All Customers</h2>
+    <hr />
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>Name</th>
+                <th>Email Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var customer in Model)
+                {
+                    <tr>
+                        <td>@customer.Customer_id</td>
+                        <td>@customer.Customer_Name</td>
+                        <td>@customer.Customer_Email</td>
+                        <td>@customer.Customer_Address</td>
+                        <td>@customer.Customer_City</td>
+                        <td>@customer.Customer_Country</td>
+                        <td>
+                            <!-- Optional action buttons, e.g., Delete or Block -->
+                             <a asp-action="customerDetails" asp-route-id="@customer.Customer_id" class="btn btn-important btn-sm");">Details</a>
+                            <a asp-action="deleteCustomer" asp-route-id="@customer.Customer_id" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No customers found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
