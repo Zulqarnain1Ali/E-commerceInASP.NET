@@ -11,10 +11,9 @@
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">Edit Customer Information</h4>
                     <a asp-action="fetchCustomer" class="btn btn-light btn-sm">Back to Summary</a>
-                </div>
-                <div class="card-body">
+                </div>                <div class="card-body">
                     <!-- Form points to the EditCustomer Post Action -->
-                    <form asp-action="EditCustomer" method="post">
+                    <form asp-action="updateCustomer" method="post" enctype="multipart/form-data">
                         <!-- Hidden input to carry the Customer ID during update -->
                         <input type="hidden" asp-for="Customer_id" />
 
