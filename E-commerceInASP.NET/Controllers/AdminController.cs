@@ -202,7 +202,7 @@ namespace E_commerceInASP.NET.Controllers
             }
 
             context.SaveChanges();
-            return RedirectToAction("fetchCustomer");
+            return RedirectToAction("customerDetails", new { id = customer.Customer_id });
         }
 
         public IActionResult deleteCustomer(int id)
