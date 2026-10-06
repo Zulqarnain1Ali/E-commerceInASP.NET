@@ -235,7 +235,7 @@ namespace E_commerceInASP.NET.Controllers
         {
             context.tbl_category.Add(cat);
             context.SaveChanges();
-            return View();
+            return RedirectToAction("fetchCategory");
         }
 
         public IActionResult updateCategory(int id)
