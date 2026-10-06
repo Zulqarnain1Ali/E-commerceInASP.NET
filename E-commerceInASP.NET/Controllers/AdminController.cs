@@ -280,5 +280,18 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("fetchCategory");
         }
 
+
+
+
+        public IActionResult fetchProducts()
+        {
+            return View(context.tbl_customer.ToList());
+        }
+
+        //public IActionResult addProducts()
+        //{
+
+        //}
+
     }
 }
