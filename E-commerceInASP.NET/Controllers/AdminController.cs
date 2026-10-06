@@ -264,9 +264,9 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult updateCategory(Category cat)
         {
-            context.tbl_category.Add(cat);
+            context.tbl_category.Update(cat);
             context.SaveChanges();
-            return View();
+            return RedirectToAction("fetchCategory");
         }
 
         public IActionResult deleteCategory(int id)
