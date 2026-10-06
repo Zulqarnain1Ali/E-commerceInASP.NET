@@ -233,7 +233,7 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult addCategory(Category cat)
         {
-            // Code for stoping saving same category again
+            // 1. Check if category already exists
             bool categoryExists = context.tbl_category
                 .Any(c => c.Category_Name.ToLower() == cat.Category_Name.ToLower());
 
@@ -243,12 +243,16 @@ namespace E_commerceInASP.NET.Controllers
                 return View(cat);
             }
 
-            if (ModelState.IsValid)
+            // 2. Ensure Category_Name isn't empty or null manually
+            if (!string.IsNullOrEmpty(cat.Category_Name))
             {
                 context.tbl_category.Add(cat);
                 context.SaveChanges();
                 return RedirectToAction("fetchCategory");
             }
+
+            // If name is empty, re-display view
+            ModelState.AddModelError("Category_Name", "Category name is required.");
             return View(cat);
         }
 
