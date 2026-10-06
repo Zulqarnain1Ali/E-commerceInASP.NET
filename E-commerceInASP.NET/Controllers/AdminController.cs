@@ -218,5 +218,49 @@ namespace E_commerceInASP.NET.Controllers
             
             return RedirectToAction("fetchCustomer");
         }
+
+
+
+        public IActionResult fetchCategory()
+        {
+            return View(context.tbl_category.ToList());
+        }
+        
+        public IActionResult addCategory()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult addCategory(Category cat)
+        {
+            context.tbl_category.Add(cat);
+            context.SaveChanges();
+            return View();
+        }
+
+        public IActionResult updateCategory(int id)
+        {
+            var category = context.tbl_category.Find(id);
+            return View(category);
+        }
+        [HttpPost]
+        public IActionResult updateCategory(Category cat)
+        {
+            context.tbl_category.Add(cat);
+            context.SaveChanges();
+            return View();
+        }
+
+        public IActionResult deleteCategory(int id)
+        {
+            var category = context.tbl_category.Find(id);
+            if (category != null)
+            {
+                context.tbl_category.Remove(category);
+                context.SaveChanges();
+            }
+            return RedirectToAction("fetchCategory");
+        }
+
     }
 }

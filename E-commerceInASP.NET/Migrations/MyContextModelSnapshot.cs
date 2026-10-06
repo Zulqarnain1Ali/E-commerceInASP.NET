@@ -77,17 +77,17 @@ namespace E_commerceInASP.NET.Migrations
 
             modelBuilder.Entity("E_commerceInASP.NET.Models.Category", b =>
                 {
-                    b.Property<int>("Key")
+                    b.Property<int>("Category_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Key"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Category_id"));
 
                     b.Property<string>("Category_Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Key");
+                    b.HasKey("Category_id");
 
                     b.ToTable("tbl_category");
                 });
@@ -185,13 +185,13 @@ namespace E_commerceInASP.NET.Migrations
 
             modelBuilder.Entity("E_commerceInASP.NET.Models.Product", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("product_id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("product_id"));
 
-                    b.Property<int>("Cat_Id")
+                    b.Property<int>("Category_id")
                         .HasColumnType("int");
 
                     b.Property<string>("Product_Description")
@@ -210,9 +210,27 @@ namespace E_commerceInASP.NET.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("product_id");
+
+                    b.HasIndex("Category_id");
 
                     b.ToTable("tbl_product");
+                });
+
+            modelBuilder.Entity("E_commerceInASP.NET.Models.Product", b =>
+                {
+                    b.HasOne("E_commerceInASP.NET.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("Category_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("E_commerceInASP.NET.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
