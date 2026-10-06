@@ -1,1 +1,49 @@
-﻿
+﻿@model IEnumerable<E_commerceInASP.NET.Models.Category>
+
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Category List</h2>
+        <a asp-action="addCategory" class="btn btn-primary">Add New Category</a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Category Name</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Category_id</td>
+                                <td>@item.Category_Name</td>
+                                <td class="text-end">
+                                    <a asp-action="updateCategory" asp-route-id="@item.Category_id" class="btn btn-sm btn-warning me-2">Edit</a>
+                                    <a asp-action="deleteCategory" asp-route-id="@item.Category_id" class="btn btn-sm btn-danger" 
+                                       onclick="return confirm('Are you sure you want to delete this category?');">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">No categories found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
