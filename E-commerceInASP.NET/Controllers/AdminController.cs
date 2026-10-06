@@ -233,9 +233,23 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult addCategory(Category cat)
         {
-            context.tbl_category.Add(cat);
-            context.SaveChanges();
-            return RedirectToAction("fetchCategory");
+            // Code for stoping saving same category again
+            bool categoryExists = context.tbl_category
+                .Any(c => c.Category_Name.ToLower() == cat.Category_Name.ToLower());
+
+            if (categoryExists)
+            {
+                ModelState.AddModelError("Category_Name", "This category already exists!");
+                return View(cat);
+            }
+
+            if (ModelState.IsValid)
+            {
+                context.tbl_category.Add(cat);
+                context.SaveChanges();
+                return RedirectToAction("fetchCategory");
+            }
+            return View(cat);
         }
 
         public IActionResult updateCategory(int id)
