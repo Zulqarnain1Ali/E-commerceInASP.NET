@@ -1,0 +1,49 @@
+﻿@model E_commerceInASP.NET.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Product Details</h2>
+        <a asp-action="fetchProducts" class="btn btn-outline-secondary btn-sm">Back to Summary View</a>
+    </div>
+    <hr />
+
+    <div class="row justify-content-center">
+        @if (Model != null)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100 text-center">
+                    <div class="card-body">
+                        <!-- Small Profile Image at the Top -->
+                        <div class="mb-3">
+                            <img src="@Model.Product_Image" alt="Pruduct Image" class="rounded-circle shadow-sm" style="width: 80px; height: 80px; object-fit: cover;" />
+                        </div>
+
+                        <h4 class="card-title text-primary mb-1">@Model.Product_Name</h4>
+                        <h6 class="card-subtitle mb-3 text-muted">@Model.Product_Price</h6>
+                        <hr />
+                        
+                        <div class="text-start px-3">
+                            <p class="card-text mb-2"><strong>Description:</strong> @Model.Product_Description</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center px-4 pb-3">
+                        <a asp-action="updateProduct" asp-route-id="@Model.product_id" class="btn btn-outline-primary btn-sm">Update</a>
+                        <a asp-action="DeleteProduct" asp-route-id="@Model.product_id" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    Product not found.
+                </div>
+            </div>
+        }
+    </div>
+</div>

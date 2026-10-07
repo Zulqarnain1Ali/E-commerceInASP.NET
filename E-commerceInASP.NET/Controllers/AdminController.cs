@@ -213,6 +213,8 @@ namespace E_commerceInASP.NET.Controllers
 
 
 
+
+
         public IActionResult fetchCategory()
         {
             return View(context.tbl_category.ToList());
@@ -311,5 +313,63 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("fetchProducts");
         }
 
+        public IActionResult productDetails(int id)
+        {
+            var prod = context.tbl_product.FirstOrDefault(c => c.product_id == id);
+            return View(prod);
+        }
+
+        //[HttpPost]
+        //public IActionResult updateCustomer(Customer customer, IFormFile file, string? newPassword)
+        //{
+        //    ModelState.Remove("Customer_Password");
+        //    var existingCustomer = context.tbl_customer.FirstOrDefault(a => a.Customer_id == customer.Customer_id);
+
+        //    if (file != null && file.Length > 0)
+        //    {
+        //        string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+        //        string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/customer");
+        //        if (!Directory.Exists(uploadDir))
+        //        {
+        //            Directory.CreateDirectory(uploadDir);
+        //        }
+        //        string filePath = Path.Combine(uploadDir, fileName);
+        //        using (var stream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            file.CopyTo(stream);
+        //        }
+        //        existingCustomer.Customer_Image = "/images/customer/" + fileName;
+        //    }
+
+        //    existingCustomer.Customer_Name = customer.Customer_Name;
+        //    existingCustomer.Customer_Email = customer.Customer_Email;
+        //    existingCustomer.Customer_Phone = customer.Customer_Phone;
+        //    existingCustomer.Customer_Gender = customer.Customer_Gender;
+        //    existingCustomer.Customer_Country = customer.Customer_Country;
+        //    existingCustomer.Customer_City = customer.Customer_City;
+        //    existingCustomer.Customer_Address = customer.Customer_Address;
+
+        //    if (!string.IsNullOrEmpty(newPassword))
+        //    {
+        //        existingCustomer.Customer_Password = newPassword;
+        //    }
+
+        //    context.SaveChanges();
+        //    return RedirectToAction("customerDetails", new { id = customer.Customer_id });
+        //}
+
+        //public IActionResult deleteCustomer(int id)
+        //{
+        //    var customer = context.tbl_customer.Find(id);
+
+        //    if (customer != null)
+        //    {
+        //        context.tbl_customer.Remove(customer);
+        //        context.SaveChanges();
+        //        TempData["Message"] = "Customer deleted successfully!";
+        //    }
+
+        //    return RedirectToAction("fetchCustomer");
+        //}
     }
 }
