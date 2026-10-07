@@ -282,7 +282,9 @@ namespace E_commerceInASP.NET.Controllers
 
         public IActionResult addProduct()
         {
-            ViewBag.Categories = new SelectList(context.tbl_category, "Category_id", "Category_Name");
+            //ViewBag.Categories = new SelectList(context.tbl_category, "Category_id", "Category_Name");
+            List<Category> categories = context.tbl_category.ToList();
+            ViewData["category"] = categories;
             return View();
         }
         [HttpPost]

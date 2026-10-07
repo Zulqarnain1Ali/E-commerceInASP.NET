@@ -1,5 +1,5 @@
 ﻿@model E_commerceInASP.NET.Models.Product
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Add Product";
 }
@@ -26,14 +26,16 @@
                             <span asp-validation-for="Product_Price" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
+                      @*  <div class="mb-3">
                             <label asp-for="Category_id" class="form-label font-weight-bold">Category</label>
                             <!-- Dropdown populated from ViewBag.Categories -->
                             <select asp-for="Category_id" class="form-select" asp-items="ViewBag.Categories" required>
                                 <option value="">-- Select Category --</option>
                             </select>
                             <span asp-validation-for="Category_id" class="text-danger"></span>
-                        </div>
+                        </div> *@
+
+                        @Html.Partial("_CategoryDropdown", ViewData["category"]) 
 
                         <div class="mb-3">
                            <label class="form-label font-weight-bold">Product Image File</label>
