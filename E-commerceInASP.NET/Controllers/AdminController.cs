@@ -315,12 +315,16 @@ namespace E_commerceInASP.NET.Controllers
 
         public IActionResult productDetails(int id)
         {
-            var prod = context.tbl_product.FirstOrDefault(c => c.product_id == id);
-            return View(prod);
+            return View(context.tbl_product.Find(id));
+        }
+
+        public IActionResult updateProduct(int id)
+        {
+            return View(context.tbl_product.Find(id));
         }
 
         //[HttpPost]
-        //public IActionResult updateCustomer(Customer customer, IFormFile file, string? newPassword)
+        //public IActionResult updateProduct(Customer customer, IFormFile file, string? newPassword)
         //{
         //    ModelState.Remove("Customer_Password");
         //    var existingCustomer = context.tbl_customer.FirstOrDefault(a => a.Customer_id == customer.Customer_id);
