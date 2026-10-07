@@ -355,6 +355,7 @@ namespace E_commerceInASP.NET.Controllers
             existingProduct.Product_Name = product.Product_Name;
             existingProduct.Product_Price = product.Product_Price;
             existingProduct.Product_Description = product.Product_Description;
+            existingProduct.Category_id = product.Category_id;
 
             context.SaveChanges();
             return RedirectToAction("productDetails", new { id = product.product_id });
