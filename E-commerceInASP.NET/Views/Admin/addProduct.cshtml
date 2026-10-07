@@ -35,7 +35,10 @@
                             <span asp-validation-for="Category_id" class="text-danger"></span>
                         </div> *@
 
+                        <div class="mb-3">
+                        <label class="form-label font-weight-bold">Product Category</label>
                         @Html.Partial("_CategoryDropdown", ViewData["category"]) 
+                        </div>
 
                         <div class="mb-3">
                            <label class="form-label font-weight-bold">Product Image File</label>
