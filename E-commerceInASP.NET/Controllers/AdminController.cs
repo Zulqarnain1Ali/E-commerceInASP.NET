@@ -361,18 +361,18 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("productDetails", new { id = product.product_id });
         }
 
-        //public IActionResult deleteCustomer(int id)
-        //{
-        //    var customer = context.tbl_customer.Find(id);
+        public IActionResult deleteProduct(int id)
+        {
+            var product = context.tbl_product.Find(id);
 
-        //    if (customer != null)
-        //    {
-        //        context.tbl_customer.Remove(customer);
-        //        context.SaveChanges();
-        //        TempData["Message"] = "Customer deleted successfully!";
-        //    }
+            if (product != null)
+            {
+                context.tbl_product.Remove(product);
+                context.SaveChanges();
+                TempData["Message"] = "Product deleted successfully!";
+            }
 
-        //    return RedirectToAction("fetchCustomer");
-        //}
+            return RedirectToAction("fetchProducts");
+        }
     }
 }
