@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 
@@ -164,27 +166,17 @@ namespace E_commerceInASP.NET.Controllers
 
             if (file != null && file.Length > 0)
             {
-                // Generate a unique filename to avoid naming conflicts
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-
-                // Define the folder path inside wwwroot
                 string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/customer");
-
-                // Create the directory if it doesn't exist yet
                 if (!Directory.Exists(uploadDir))
                 {
                     Directory.CreateDirectory(uploadDir);
                 }
-
                 string filePath = Path.Combine(uploadDir, fileName);
-
-                // Save the file physically to the server
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
-
-                // Save the relative path string into your database model property
                 existingCustomer.Customer_Image = "/images/customer/" + fileName;
             }
             
@@ -285,13 +277,37 @@ namespace E_commerceInASP.NET.Controllers
 
         public IActionResult fetchProducts()
         {
-            return View(context.tbl_customer.ToList());
+            return View(context.tbl_product.Include(p => p.Category).ToList());
         }
 
-        //public IActionResult addProducts()
-        //{
+        public IActionResult addProduct()
+        {
+            ViewBag.Categories = new SelectList(context.tbl_category, "Category_id", "Category_Name");
+            return View();
+        }
+        [HttpPost]
+        public IActionResult addProduct(Product prod, IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Product_Image");
+                if (!Directory.Exists(uploadDir))
+                {
+                    Directory.CreateDirectory(uploadDir);
+                }
+                string filePath = Path.Combine(uploadDir, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+                prod.Product_Image = "/images/Product_Image/" + fileName;
+            }
 
-        //}
+            context.tbl_product.Add(prod);
+            context.SaveChanges();
+            return RedirectToAction("fetchProducts");
+        }
 
     }
 }

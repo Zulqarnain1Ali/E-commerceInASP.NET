@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_commerceInASP.NET.Models
 {
@@ -12,6 +13,7 @@ namespace E_commerceInASP.NET.Models
         public string Product_Description { get; set; }
 
         public int Category_id { get; set; }
+        [ForeignKey("Category_id")]
         public Category Category { get; set; }
     }
 }
