@@ -315,6 +315,9 @@ namespace E_commerceInASP.NET.Controllers
 
         public IActionResult productDetails(int id)
         {
+            var product = context.tbl_product
+        .Include(p => p.Category)
+        .FirstOrDefault(p => p.product_id == id);
             return View(context.tbl_product.Find(id));
         }
 

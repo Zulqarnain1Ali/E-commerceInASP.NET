@@ -26,6 +26,17 @@
                         <h6 class="card-subtitle mb-3 text-muted">@Model.Product_Price</h6>
                         <hr />
                         
+                        @* <div class="mb-3">
+                        <label class="form-label font-weight-bold">Product Category</label>
+                        @Html.Partial("_CategoryDropdown", ViewData["category"]) 
+                        <p class="form-control-static">@Model.Category_id</p>
+                        </div> *@
+
+                        <div class="mb-3">
+    <label class="form-label font-weight-bold">Product Category</label>
+    <!-- Just show the category name directly as text -->
+    <p class="form-control-static">@Model.Category?.Category_Name</p>
+</div>
                         <div class="text-start px-3">
                             <p class="card-text mb-2"><strong>Description:</strong> @Model.Product_Description</p>
                         </div>

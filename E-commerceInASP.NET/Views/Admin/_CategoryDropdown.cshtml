@@ -2,6 +2,10 @@
 @{
     int? selectedCategory = ViewData["SelectedCategory"] as int?;
 }
+@if(Model != null)
+{
+    
+
 <select name="Category_id" class="form-select">
     <option value="">-- Select Category --</option>
     @foreach (var cat in Model)
@@ -16,3 +20,8 @@
         }
     }
 </select>
+}
+else
+{
+    <p class="text-danger"> Category List not provided</p>
+}
