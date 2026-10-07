@@ -1,18 +1,18 @@
-﻿@* @model List<Category>
-
-<select class="form-select my-3">
-    @foreach (var cat in Model)
-    {
-        <otion value="@cat.Category_id"> @cat.Category_Name </otion>
-    }
-</select> *@
-
-@model List<E_commerceInASP.NET.Models.Category>
-
+﻿@model List<E_commerceInASP.NET.Models.Category>
+@{
+    int? selectedCategory = ViewData["SelectedCategory"] as int?;
+}
 <select name="Category_id" class="form-select">
     <option value="">-- Select Category --</option>
     @foreach (var cat in Model)
     {
-        <option value="@cat.Category_id">@cat.Category_Name</option>
+        if (selectedCategory != null && selectedCategory == cat.Category_id)
+        {
+            <option value="@cat.Category_id" selected="selected">@cat.Category_Name</option>
+        }
+        else
+        {
+             <option value="@cat.Category_id">@cat.Category_Name</option>
+        }
     }
 </select>

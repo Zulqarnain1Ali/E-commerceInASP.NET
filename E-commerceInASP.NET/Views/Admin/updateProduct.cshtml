@@ -15,7 +15,7 @@
                     <form asp-action="updateProduct" method="post">
                         
                         <input type="hidden" asp-for="product_id" />
-
+                        
                         <div class="mb-3">
                             <label asp-for="Product_Name" class="form-label font-weight-bold">Product Name</label>
                             <input asp-for="Product_Name" class="form-control" placeholder="Enter product name..." required />
@@ -27,10 +27,19 @@
                             <span asp-validation-for="Product_Price" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
+                        <label class="form-label font-weight-bold">Product Category</label>
+                        @Html.Partial("_CategoryDropdown", ViewData["category"]) 
+                        </div>
+                        <div class="mb-3">
                             <label asp-for="Product_Description" class="form-label font-weight-bold">Product Description</label>
                             <textarea asp-for="Product_Description" class="form-control" placeholder="Enter product Description..." required ></textarea>
                             <span asp-validation-for="Product_Description" class="text-danger"></span>
                         </div>
+                        <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Image File Name</label>
+                                <input type="file" name="file" class="form-control" />
+                                <span asp-validation-for="Product_Image" class="text-danger"></span>
+                            </div>
 
                         <div class="d-flex justify-content-between">
                             <a asp-action="fetchProducts" class="btn btn-secondary">Back to List</a>
