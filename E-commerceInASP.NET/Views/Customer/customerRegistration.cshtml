@@ -1,13 +1,15 @@
-﻿@{
+﻿@model E_commerceInASP.NET.Models.Customer
+
+@{
     ViewData["Title"] = "Customer Registration";
 }
 
-<div class="container mt-5 mb-5">
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
+        <div class="col-md-8 col-lg-7">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-dark text-white text-center py-3">
-                    <h4 class="mb-0 fw-bold">Create an Account</h4>
+                    <h4 class="mb-0 fw-bold">Customer Registration</h4>
                 </div>
                 <div class="card-body p-4">
 
@@ -18,38 +20,73 @@
                         </div>
                     }
 
-                    <form asp-controller="Customer" asp-action="customerRegistration" method="post">
-                        
-                        <!-- Name Field -->
+                    <form asp-controller="Customer" asp-action="customerRegistration" method="post" enctype="multipart/form-data">
+
+                        <!-- Name -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Full Name</label>
-                            <input type="text" name="customer_name" class="form-control" placeholder="Enter your full name" required />
+                            <label asp-for="Customer_Name" class="form-label fw-bold">Full Name</label>
+                            <input asp-for="Customer_Name" class="form-control" placeholder="Enter your full name" required />
                         </div>
 
-                        <!-- Email Field -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Email Address</label>
-                            <input type="email" name="customer_email" class="form-control" placeholder="name@example.com" required />
+                        <!-- Email & Password -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Email" class="form-label fw-bold">Email Address</label>
+                                <input asp-for="Customer_Email" type="email" class="form-control" placeholder="name@example.com" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Password" class="form-label fw-bold">Password</label>
+                                <input asp-for="Customer_Password" type="password" class="form-control" placeholder="Create password" required />
+                            </div>
                         </div>
 
-                        <!-- Password Field -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Password</label>
-                            <input type="password" name="customer_password" class="form-control" placeholder="Create a password" required />
+                        <!-- Phone & Gender -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Phone" class="form-label fw-bold">Phone Number</label>
+                                <input asp-for="Customer_Phone" type="tel" class="form-control" placeholder="03XXXXXXXXX" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Gender" class="form-label fw-bold">Gender</label>
+                                <select asp-for="Customer_Gender" class="form-select">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <!-- Phone Field (Optional - adjust to your tbl_customer schema) -->
+                        <!-- Country & City -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Country" class="form-label fw-bold">Country</label>
+                                <input asp-for="Customer_Country" class="form-control" placeholder="e.g. Pakistan" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_City" class="form-label fw-bold">City</label>
+                                <input asp-for="Customer_City" class="form-control" placeholder="e.g. Sargodha" />
+                            </div>
+                        </div>
+
+                        <!-- Address -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Phone Number</label>
-                            <input type="tel" name="customer_phone" class="form-control" placeholder="03XXXXXXXXX" />
+                            <label asp-for="Customer_Address" class="form-label fw-bold">Street Address</label>
+                            <textarea asp-for="Customer_Address" class="form-control" rows="2" placeholder="House/Street, Area..."></textarea>
+                        </div>
+
+                        <!-- Profile Image -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Profile Picture</label>
+                            <input type="file" name="customerImageFile" class="form-control" accept="image/*" />
                         </div>
 
                         <!-- Submit Button -->
                         <div class="d-grid gap-2 mt-4">
-                            <button type="submit" class="btn btn-dark btn-lg">Register</button>
+                            <button type="submit" class="btn btn-dark btn-lg">Register Account</button>
                         </div>
 
-                        <!-- Back to Login Link -->
+                        <!-- Login Link -->
                         <div class="text-center mt-3">
                             <p class="text-muted small mb-0">
                                 Already have an account? 

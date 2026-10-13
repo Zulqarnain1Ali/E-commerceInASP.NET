@@ -35,7 +35,7 @@ namespace E_commerceInASP.NET.Controllers
         {
             context.tbl_customer.Add(customer);
             context.SaveChanges();
-            return RedirectToAction("cusomterLogin");
+            return RedirectToAction("customerLogin");
         }
 
 
