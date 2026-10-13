@@ -23,6 +23,10 @@ namespace E_commerceInASP.NET.Controllers
 
         public IActionResult customerLogin()
         {
+            if (HttpContext.Session.GetString("customerSession") != null)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
         [HttpPost]
