@@ -59,7 +59,7 @@ namespace E_commerceInASP.NET.Controllers
 
 
         // set customer accounts same as we set admin accounts
-        // session remaining
+        // Next: login/registration option should disappear when user is login. video: 10, 6 min
 
 
 
