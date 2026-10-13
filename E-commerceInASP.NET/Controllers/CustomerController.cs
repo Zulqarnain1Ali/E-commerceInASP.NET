@@ -21,41 +21,53 @@ namespace E_commerceInASP.NET.Controllers
             return View(products);
         }
 
-        // 2. Customer Login GET
-        [HttpGet]
         public IActionResult customerLogin()
         {
-            if (HttpContext.Session.GetString("customer_session") != null)
-            {
-                return RedirectToAction("Index");
-            }
             return View();
         }
 
-        // 3. Customer Login POST
-        [HttpPost]
-        public IActionResult customerLogin(string customer_email, string customer_password)
+        public IActionResult customerRegistration()
         {
-            var customer = context.tbl_customer
-                .FirstOrDefault(c => c.Customer_Email == customer_email && c.Customer_Password == customer_password);
-
-            if (customer != null)
-            {
-                HttpContext.Session.SetString("customer_session", customer.Customer_id.ToString());
-                HttpContext.Session.SetString("customer_name", customer.Customer_Name);
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ErrorMessage = "Invalid email or password.";
             return View();
         }
 
-        // 4. Logout
-        public IActionResult Logout()
-        {
-            HttpContext.Session.Remove("customer_session");
-            HttpContext.Session.Remove("customer_name");
-            return RedirectToAction("customerLogin");
-        }
+        //// 2. Customer Login GET
+        //[HttpGet]
+        //public IActionResult customerLogin()
+        //{
+        //    if (HttpContext.Session.GetString("customer_session") != null)
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
+
+        //// 3. Customer Login POST
+        //[HttpPost]
+        //public IActionResult customerLogin(string customer_email, string customer_password)
+        //{
+        //    var customer = context.tbl_customer
+        //        .FirstOrDefault(c => c.Customer_Email == customer_email && c.Customer_Password == customer_password);
+
+        //    if (customer != null)
+        //    {
+        //        HttpContext.Session.SetString("customer_session", customer.Customer_id.ToString());
+        //        HttpContext.Session.SetString("customer_name", customer.Customer_Name);
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    ViewBag.ErrorMessage = "Invalid email or password.";
+        //    return View();
+        //}
+
+        //// 4. Logout
+        //public IActionResult Logout()
+        //{
+        //    HttpContext.Session.Remove("customer_session");
+        //    HttpContext.Session.Remove("customer_name");
+        //    return RedirectToAction("customerLogin");
+        //}
+
+
     }
 }
