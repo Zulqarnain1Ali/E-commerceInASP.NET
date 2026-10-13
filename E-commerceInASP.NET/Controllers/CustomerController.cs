@@ -30,6 +30,19 @@ namespace E_commerceInASP.NET.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult customerRegistration(Customer customer)
+        {
+            context.tbl_customer.Add(customer);
+            context.SaveChanges();
+            return RedirectToAction("cusomterLogin");
+        }
+
+
+        // set customer accounts same as we set admin accounts
+
+
+
 
         //// 2. Customer Login GET
         //[HttpGet]

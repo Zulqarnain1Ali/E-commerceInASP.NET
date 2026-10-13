@@ -1,5 +1,67 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Customer Registration";
 }
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white text-center py-3">
+                    <h4 class="mb-0 fw-bold">Create an Account</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger py-2 small">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <form asp-controller="Customer" asp-action="customerRegistration" method="post">
+                        
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Full Name</label>
+                            <input type="text" name="customer_name" class="form-control" placeholder="Enter your full name" required />
+                        </div>
+
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email Address</label>
+                            <input type="email" name="customer_email" class="form-control" placeholder="name@example.com" required />
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Password</label>
+                            <input type="password" name="customer_password" class="form-control" placeholder="Create a password" required />
+                        </div>
+
+                        <!-- Phone Field (Optional - adjust to your tbl_customer schema) -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Phone Number</label>
+                            <input type="tel" name="customer_phone" class="form-control" placeholder="03XXXXXXXXX" />
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-dark btn-lg">Register</button>
+                        </div>
+
+                        <!-- Back to Login Link -->
+                        <div class="text-center mt-3">
+                            <p class="text-muted small mb-0">
+                                Already have an account? 
+                                <a asp-controller="Customer" asp-action="customerLogin" class="text-decoration-none fw-bold">
+                                    Login here
+                                </a>
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
