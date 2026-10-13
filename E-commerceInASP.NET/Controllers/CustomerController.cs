@@ -25,6 +25,21 @@ namespace E_commerceInASP.NET.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult customerLogin(string customer_email, string customer_password)
+        {
+            var customer = context.tbl_customer.FirstOrDefault(c => c.Customer_Email == customer_email);
+            if(customer!=null && customer.Customer_Password== customer_password)
+            {
+                HttpContext.Session.SetString("customerSession", customer.Customer_id.ToString());
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ViewBag.message = "Incorrect Credentials";
+                return View();
+            }
+        }
 
         public IActionResult customerRegistration()
         {
@@ -40,7 +55,7 @@ namespace E_commerceInASP.NET.Controllers
 
 
         // set customer accounts same as we set admin accounts
-
+        // session remaining
 
 
 
