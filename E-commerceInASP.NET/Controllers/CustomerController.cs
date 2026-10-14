@@ -64,10 +64,6 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("Index");
         }
 
-        //public IActionResult customerProfile()
-        //{
-        //    return View();
-        //}
 
         public IActionResult customerProfile()
         {
@@ -87,7 +83,10 @@ namespace E_commerceInASP.NET.Controllers
             return View(customer);
         }
 
-
+        public IActionResult customerEdit()
+        {
+            return View();
+        }
 
 
 

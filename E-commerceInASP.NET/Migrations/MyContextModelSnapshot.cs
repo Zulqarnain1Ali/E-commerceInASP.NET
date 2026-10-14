@@ -101,11 +101,9 @@ namespace E_commerceInASP.NET.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Customer_id"));
 
                     b.Property<string>("Customer_Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Country")
@@ -117,11 +115,9 @@ namespace E_commerceInASP.NET.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Name")
@@ -133,7 +129,6 @@ namespace E_commerceInASP.NET.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Phone")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Customer_id");
