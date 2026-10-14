@@ -163,9 +163,49 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        public IActionResult Feedback()
+        
+
+        public IActionResult feedback()
         {
-            return View();
+            var model = new Feedback();
+
+            string customerIdStr = HttpContext.Session.GetString("customerSession");
+            if (!string.IsNullOrEmpty(customerIdStr))
+            {
+                int customerId = int.Parse(customerIdStr);
+                var customer = context.tbl_customer.FirstOrDefault(c => c.Customer_id == customerId);
+                if (customer != null)
+                {
+                    model.user_name = customer.Customer_Name;
+                }
+            }
+            return View(model);
+        }
+
+        
+        [HttpPost]
+        public IActionResult feedback(Feedback feedback)
+        {
+            if (string.IsNullOrWhiteSpace(feedback.user_name) || string.IsNullOrWhiteSpace(feedback.user_message))
+            {
+                ViewBag.ErrorMessage = "Please fill in all fields before submitting.";
+                return View(feedback);
+            }
+
+            try
+            {
+                context.tbl_feedback.Add(feedback);
+                context.SaveChanges();
+
+                ViewBag.Success = "Your feedback has been received. Thank you for helping us grow!";
+                // Return an empty model so the textarea clears on success
+                return View(new Feedback());
+            }
+            catch (Exception)
+            {
+                ViewBag.ErrorMessage = "An error occurred while saving your feedback. Please try again.";
+                return View(feedback);
+            }
         }
 
 

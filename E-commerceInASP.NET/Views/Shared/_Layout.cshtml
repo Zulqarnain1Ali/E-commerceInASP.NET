@@ -30,6 +30,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Feedback">Contact</a>
+                        </li>
                         @if (string.IsNullOrEmpty(Context.Session.GetString("customerSession")))
                         {
                             <li class="nav-item">
