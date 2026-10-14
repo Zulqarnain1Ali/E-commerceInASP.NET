@@ -163,7 +163,10 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-
+        public IActionResult Feedback()
+        {
+            return View();
+        }
 
 
         // set customer accounts same as we set admin accounts
