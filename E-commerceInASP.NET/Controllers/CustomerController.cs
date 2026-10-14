@@ -72,6 +72,7 @@ namespace E_commerceInASP.NET.Controllers
     }
         }
 
+
         public IActionResult customerLogout()
         {
             HttpContext.Session.Remove("customerSession");
@@ -116,7 +117,6 @@ namespace E_commerceInASP.NET.Controllers
 
             return View(customer);
         }
-
         
         [HttpPost]
         public IActionResult customerEdit(Customer updatedCustomer, IFormFile? customerImageFile)
@@ -127,7 +127,7 @@ namespace E_commerceInASP.NET.Controllers
                 return RedirectToAction("customerLogin");
             }
 
-            // 1. If a new image was chosen, save it to wwwroot/images/customer/
+            //image
             if (customerImageFile != null && customerImageFile.Length > 0)
             {
                 string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/customer");
@@ -147,7 +147,7 @@ namespace E_commerceInASP.NET.Controllers
                 existingCustomer.Customer_Image = uniqueFileName;
             }
 
-            // 2. Update editable fields
+            // Update editable fields
             existingCustomer.Customer_Name = updatedCustomer.Customer_Name;
             existingCustomer.Customer_Email = updatedCustomer.Customer_Email;
             existingCustomer.Customer_Password = updatedCustomer.Customer_Password;
@@ -161,6 +161,7 @@ namespace E_commerceInASP.NET.Controllers
 
             return RedirectToAction("customerProfile");
         }
+
 
 
 
