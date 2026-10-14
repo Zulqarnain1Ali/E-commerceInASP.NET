@@ -58,6 +58,39 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("customerLogin");
         }
 
+        public IActionResult customerLogout()
+        {
+            HttpContext.Session.Remove("customerSession");
+            return RedirectToAction("Index");
+        }
+
+        //public IActionResult customerProfile()
+        //{
+        //    return View();
+        //}
+
+        public IActionResult customerProfile()
+        {
+            string customerIdStr = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerIdStr))
+            {
+                return RedirectToAction("customerLogin");
+            }
+            int customerId = int.Parse(customerIdStr);
+
+            var customer = context.tbl_customer.FirstOrDefault(c => c.Customer_id == customerId);
+            if (customer == null)
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            return View(customer);
+        }
+
+
+
+
+
 
         // set customer accounts same as we set admin accounts
         // Next: login/registration option should disappear when user is login. video: 10, 6 min
