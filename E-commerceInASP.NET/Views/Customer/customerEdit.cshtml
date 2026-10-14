@@ -1,0 +1,127 @@
+﻿@model E_commerceInASP.NET.Models.Customer
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                    <h5 class="mb-0 fw-bold">Edit Profile</h5>
+                    <span class="badge bg-light text-dark">ID: #@Model.Customer_id</span>
+                </div>
+
+                <div class="card-body p-4">
+
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger py-2 small">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+
+                    <form asp-controller="Customer" asp-action="customerProfileEdit" method="post" enctype="multipart/form-data">
+                        
+                        <!-- Hidden inputs to retain ID and existing values -->
+                        <input type="hidden" asp-for="Customer_id" />
+                        <input type="hidden" asp-for="Customer_Image" />
+
+                        <!-- Current Profile Picture Preview -->
+                        <div class="text-center mb-4">
+                            @if (!string.IsNullOrEmpty(Model.Customer_Image))
+                            {
+                                <img src="~/images/customer/@Model.Customer_Image" 
+                                     alt="@Model.Customer_Name" 
+                                     class="rounded-circle img-thumbnail shadow-sm mb-2" 
+                                     style="width: 120px; height: 120px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-secondary text-white d-inline-flex justify-content-center align-items-center shadow-sm mb-2" 
+                                     style="width: 120px; height: 120px; font-size: 2.5rem; font-weight: bold;">
+                                    @(string.IsNullOrEmpty(Model.Customer_Name) ? "U" : Model.Customer_Name.Substring(0, 1).ToUpper())
+                                </div>
+                            }
+                            <div>
+                                <small class="text-muted d-block">Current Profile Photo</small>
+                            </div>
+                        </div>
+
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label asp-for="Customer_Name" class="form-label fw-bold">Full Name</label>
+                            <input asp-for="Customer_Name" class="form-control" required />
+                        </div>
+
+                        <!-- Email & Password -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Email" class="form-label fw-bold">Email</label>
+                                <input asp-for="Customer_Email" type="email" class="form-control" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Password" class="form-label fw-bold">Password</label>
+                                <input asp-for="Customer_Password" type="password" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Phone & Gender -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Phone" class="form-label fw-bold">Phone Number</label>
+                                <input asp-for="Customer_Phone" type="tel" class="form-control" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Gender" class="form-label fw-bold">Gender</label>
+                                <select asp-for="Customer_Gender" class="form-select">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Country & City -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_Country" class="form-label fw-bold">Country</label>
+                                <input asp-for="Customer_Country" class="form-control" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Customer_City" class="form-label fw-bold">City</label>
+                                <input asp-for="Customer_City" class="form-control" />
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label asp-for="Customer_Address" class="form-label fw-bold">Street Address</label>
+                            <textarea asp-for="Customer_Address" class="form-control" rows="2"></textarea>
+                        </div>
+
+                        <!-- Change Profile Image Upload -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Change Profile Picture</label>
+                            <input type="file" name="customerImageFile" class="form-control" accept="image/*" />
+                            <small class="text-muted">Leave empty to keep your existing photo.</small>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                            <a asp-controller="Customer" asp-action="customerProfile" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-dark">
+                                Save Changes
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -53,9 +53,23 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult customerRegistration(Customer customer)
         {
-            context.tbl_customer.Add(customer);
-            context.SaveChanges();
-            return RedirectToAction("customerLogin");
+            if (!ModelState.IsValid)
+            {
+                ViewData["ErrorMessage"] = "Please fill in all required fields properly.";
+                return View(customer);
+            }
+            try
+            {
+
+                context.tbl_customer.Add(customer);
+                context.SaveChanges();
+                return RedirectToAction("customerLogin");
+            }
+            catch (Exception)
+    {
+        ViewData["ErrorMessage"] = "An error occurred while saving your details. Please check your information and try again.";
+        return View(customer);
+    }
         }
 
         public IActionResult customerLogout()
