@@ -18,6 +18,7 @@ namespace E_commerceInASP.NET.Controllers
         public IActionResult Index()
         {
             var products = context.tbl_product.Include(p => p.Category).ToList();
+            ViewBag.checkSession = HttpContext.Session.GetString("customerSession");
             return View(products);
         }
 
