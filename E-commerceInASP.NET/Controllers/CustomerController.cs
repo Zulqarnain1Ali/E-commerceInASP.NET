@@ -97,9 +97,69 @@ namespace E_commerceInASP.NET.Controllers
             return View(customer);
         }
 
+
+        
         public IActionResult customerEdit()
         {
-            return View();
+            string customerIdStr = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerIdStr))
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            int customerId = int.Parse(customerIdStr);
+            var customer = context.tbl_customer.FirstOrDefault(c => c.Customer_id == customerId);
+            if (customer == null)
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            return View(customer);
+        }
+
+        
+        [HttpPost]
+        public IActionResult customerEdit(Customer updatedCustomer, IFormFile? customerImageFile)
+        {
+            var existingCustomer = context.tbl_customer.FirstOrDefault(c => c.Customer_id == updatedCustomer.Customer_id);
+            if (existingCustomer == null)
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            // 1. If a new image was chosen, save it to wwwroot/images/customer/
+            if (customerImageFile != null && customerImageFile.Length > 0)
+            {
+                string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/customer");
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(customerImageFile.FileName);
+                string filePath = Path.Combine(folderPath, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    customerImageFile.CopyTo(fileStream);
+                }
+
+                existingCustomer.Customer_Image = uniqueFileName;
+            }
+
+            // 2. Update editable fields
+            existingCustomer.Customer_Name = updatedCustomer.Customer_Name;
+            existingCustomer.Customer_Email = updatedCustomer.Customer_Email;
+            existingCustomer.Customer_Password = updatedCustomer.Customer_Password;
+            existingCustomer.Customer_Phone = updatedCustomer.Customer_Phone;
+            existingCustomer.Customer_Gender = updatedCustomer.Customer_Gender;
+            existingCustomer.Customer_Country = updatedCustomer.Customer_Country;
+            existingCustomer.Customer_City = updatedCustomer.Customer_City;
+            existingCustomer.Customer_Address = updatedCustomer.Customer_Address;
+
+            context.SaveChanges();
+
+            return RedirectToAction("customerProfile");
         }
 
 
