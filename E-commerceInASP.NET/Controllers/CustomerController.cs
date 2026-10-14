@@ -163,8 +163,8 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        
 
+        // GET: Customer/feedback
         public IActionResult feedback()
         {
             var model = new Feedback();
@@ -177,16 +177,18 @@ namespace E_commerceInASP.NET.Controllers
                 if (customer != null)
                 {
                     model.user_name = customer.Customer_Name;
+                    model.user_email = customer.Customer_Email;
                 }
             }
             return View(model);
         }
 
-        
         [HttpPost]
         public IActionResult feedback(Feedback feedback)
         {
-            if (string.IsNullOrWhiteSpace(feedback.user_name) || string.IsNullOrWhiteSpace(feedback.user_message))
+            if (string.IsNullOrWhiteSpace(feedback.user_name) ||
+                string.IsNullOrWhiteSpace(feedback.user_email) ||
+                string.IsNullOrWhiteSpace(feedback.user_message))
             {
                 ViewBag.ErrorMessage = "Please fill in all fields before submitting.";
                 return View(feedback);
@@ -197,8 +199,7 @@ namespace E_commerceInASP.NET.Controllers
                 context.tbl_feedback.Add(feedback);
                 context.SaveChanges();
 
-                ViewBag.Success = "Your feedback has been received. Thank you for helping us grow!";
-                // Return an empty model so the textarea clears on success
+                ViewBag.Success = "Your feedback has been received. Thank you for reaching out!";
                 return View(new Feedback());
             }
             catch (Exception)

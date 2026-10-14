@@ -107,7 +107,6 @@ namespace E_commerceInASP.NET.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Customer_Email")
@@ -164,6 +163,10 @@ namespace E_commerceInASP.NET.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("user_email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("user_message")
                         .IsRequired()

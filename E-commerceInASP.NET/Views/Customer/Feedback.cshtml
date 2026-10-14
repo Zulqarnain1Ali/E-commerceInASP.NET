@@ -113,7 +113,16 @@
                                    placeholder="Enter your name" 
                                    required />
                         </div>
-
+                        <!-- Email Field -->
+    <div class="col-md-6 mb-3">
+        <label asp-for="user_email" class="form-label fw-bold">Your Email</label>
+        <input asp-for="user_email" 
+               type="email" 
+               class="form-control" 
+               placeholder="name@example.com" 
+               required />
+    </div>
+</div>
                         <!-- Feedback Message -->
                         <div class="mb-4">
                             <label asp-for="user_message" class="form-label fw-bold">Your Message / Feedback</label>
