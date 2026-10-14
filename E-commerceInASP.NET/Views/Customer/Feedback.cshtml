@@ -104,32 +104,36 @@
                     }
 
                     <form asp-controller="Customer" asp-action="feedback" method="post">
-                        
-                        <!-- Name Field -->
-                        <div class="mb-3">
-                            <label asp-for="user_name" class="form-label fw-bold">Your Name</label>
-                            <input asp-for="user_name" 
-                                   class="form-control" 
-                                   placeholder="Enter your name" 
-                                   required />
+
+                        <!-- Row for Name and Email -->
+                        <div class="row">
+                            <!-- Name Field -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="user_name" class="form-label fw-bold">Your Name</label>
+                                <input asp-for="user_name"
+                                       class="form-control"
+                                       placeholder="Enter your name"
+                                       required />
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="user_email" class="form-label fw-bold">Your Email</label>
+                                <input asp-for="user_email"
+                                       type="email"
+                                       class="form-control"
+                                       placeholder="name@example.com"
+                                       required />
+                            </div>
                         </div>
-                        <!-- Email Field -->
-    <div class="col-md-6 mb-3">
-        <label asp-for="user_email" class="form-label fw-bold">Your Email</label>
-        <input asp-for="user_email" 
-               type="email" 
-               class="form-control" 
-               placeholder="name@example.com" 
-               required />
-    </div>
-</div>
+
                         <!-- Feedback Message -->
                         <div class="mb-4">
                             <label asp-for="user_message" class="form-label fw-bold">Your Message / Feedback</label>
-                            <textarea asp-for="user_message" 
-                                      class="form-control" 
-                                      rows="7" 
-                                      placeholder="How can we assist you, or what would you like to share about our service?" 
+                            <textarea asp-for="user_message"
+                                      class="form-control"
+                                      rows="7"
+                                      placeholder="How can we assist you, or what would you like to share about our service?"
                                       required></textarea>
                         </div>
 
@@ -139,6 +143,7 @@
                                 Send Message
                             </button>
                         </div>
+
                     </form>
                 </div>
             </div>
