@@ -67,7 +67,6 @@ namespace E_commerceInASP.NET.Controllers
             }
             try
             {
-
                 context.tbl_customer.Add(customer);
                 context.SaveChanges();
                 return RedirectToAction("customerLogin");
@@ -216,6 +215,29 @@ namespace E_commerceInASP.NET.Controllers
                 ViewBag.ErrorMessage = "An error occurred while sending your feedback. Please try again.";
                 return View(feedback);
             }
+        }
+
+
+
+        public IActionResult productDetails(int id)
+        {
+            var product = context.tbl_product.FirstOrDefault(p => p.product_id == id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(product);
+        }
+
+        public IActionResult allProducts()
+        {
+            var allProducts = context.tbl_product
+                                     .OrderByDescending(p => p.product_id)
+                                     .ToList();
+
+            return View(allProducts);
         }
 
 

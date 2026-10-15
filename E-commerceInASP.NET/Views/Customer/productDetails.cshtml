@@ -1,0 +1,93 @@
+﻿@model E_commerceInASP.NET.Models.Product
+
+@{
+    ViewData["Title"] = Model.Product_Name + " - Details";
+}
+
+<div class="container my-5">
+    <!-- Breadcrumb Navigation -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Customer" asp-action="Index" class="text-decoration-none text-muted">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Customer" asp-action="allProducts" class="text-decoration-none text-muted">Products</a></li>
+            <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">@Model.Product_Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5 align-items-center">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-light">
+                @if (!string.IsNullOrEmpty(Model.Product_Image))
+                {
+                    <img src="@Model.Product_Image" 
+                         class="img-fluid w-100 object-fit-contain" 
+                         style="max-height: 480px;" 
+                         alt="@Model.Product_Name" />
+                }
+                else
+                {
+                    <div class="py-5 text-center text-muted" style="min-height: 350px;">
+                        <span>No Image Available</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Product Details & Actions -->
+        <div class="col-md-6">
+            <div class="ps-lg-3">
+                <span class="badge bg-secondary mb-2">In Stock</span>
+                <h1 class="fw-bold mb-3">@Model.Product_Name</h1>
+
+                <div class="mb-4">
+                    <span class="fs-2 fw-bold text-dark">Rs. @Model.Product_Price</span>
+                    <span class="text-muted small ms-2">(Tax included)</span>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="fw-bold text-uppercase text-muted small">Description</h6>
+                    <p class="text-secondary leading-relaxed">
+                        @Model.Product_Description
+                    </p>
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Purchase / Cart Area -->
+                <form asp-controller="Customer" asp-action="addToCart" method="post">
+                    <input type="hidden" name="productId" value="@Model.product_id" />
+                    
+                    <div class="row g-3 align-items-center mb-4">
+                        <div class="col-auto">
+                            <label class="fw-semibold">Quantity:</label>
+                        </div>
+                        <div class="col-auto" style="width: 100px;">
+                            <input type="number" name="quantity" class="form-control text-center" value="1" min="1" max="20" />
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-sm-flex">
+                        <button type="submit" class="btn btn-dark btn-lg px-4 flex-grow-1">
+                            Add to Cart
+                        </button>
+                        <a asp-controller="Customer" asp-action="allProducts" class="btn btn-outline-secondary btn-lg px-3">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Store Perks -->
+                <div class="mt-4 pt-3 border-top">
+                    <div class="row g-2 text-muted small">
+                        <div class="col-6">✓ Fast Doorstep Shipping</div>
+                        <div class="col-6">✓ Genuine Quality Guaranteed</div>
+                        <div class="col-6">✓ Standard Return Window</div>
+                        <div class="col-6">✓ Dedicated Customer Support</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
