@@ -199,12 +199,14 @@ namespace E_commerceInASP.NET.Controllers
                 context.tbl_feedback.Add(feedback);
                 context.SaveChanges();
 
-                ViewBag.Success = "Your feedback has been received. Thank you for reaching out!";
-                return View(new Feedback());
+                TempData["message"] = "Thank you for your feedback!";
+                //ViewBag.Success = "Your feedback has been received. Thank you for reaching out!";
+                //return View(new Feedback());
+                return RedirectToAction("feedback");
             }
             catch (Exception)
             {
-                ViewBag.ErrorMessage = "An error occurred while saving your feedback. Please try again.";
+                ViewBag.ErrorMessage = "An error occurred while sending your feedback. Please try again.";
                 return View(feedback);
             }
         }

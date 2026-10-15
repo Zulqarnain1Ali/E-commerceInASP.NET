@@ -87,10 +87,10 @@
 
                 <div class="card-body p-4">
                     <!-- Status alerts -->
-                    @if (ViewBag.Success != null)
+                    @if (TempData["message"] != null)
                     {
                         <div class="alert alert-success alert-dismissible fade show py-2 small" role="alert">
-                            <strong>Success:</strong> @ViewBag.Success
+                            <strong>Success:</strong> @TempData["message"]
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
