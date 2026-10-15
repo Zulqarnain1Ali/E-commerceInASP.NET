@@ -105,9 +105,9 @@
                             <div class="ratio ratio-4x3 bg-light rounded-top overflow-hidden">
                                 @if (!string.IsNullOrEmpty(item.Product_Image))
                                 {
-                                    <img src="~/images/product/@item.Product_Image" 
-                                         class="card-img-top object-fit-cover" 
-                                         alt="@item.Product_Name" />
+                                         <img src="@item.Product_Image" 
+     class="card-img-top object-fit-cover" 
+     alt="@item.Product_Name" />
                                 }
                                 else
                                 {
@@ -144,6 +144,12 @@
                 }
             </div>
         }
+        
+<div class="text-center mt-5">
+    <a asp-controller="Customer" asp-action="allProducts" class="btn btn-outline-dark btn-lg px-5 py-2 fw-semibold">
+        Explore All Products &rarr;
+    </a>
+</div>
     </div>
 </section>
 

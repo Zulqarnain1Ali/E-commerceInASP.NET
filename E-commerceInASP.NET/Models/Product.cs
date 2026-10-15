@@ -9,8 +9,8 @@ namespace E_commerceInASP.NET.Models
         public int product_id { get; set; }
         public string Product_Name { get; set; }
         public string Product_Price { get; set; }
-        public string Product_Image { get; set; }
-        public string Product_Description { get; set; }
+        public string? Product_Image { get; set; }
+        public string? Product_Description { get; set; }
 
         public int Category_id { get; set; }
         [ForeignKey("Category_id")]

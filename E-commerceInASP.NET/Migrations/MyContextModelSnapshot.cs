@@ -193,11 +193,9 @@ namespace E_commerceInASP.NET.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Product_Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Product_Image")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Product_Name")

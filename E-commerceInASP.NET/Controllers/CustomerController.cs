@@ -20,6 +20,13 @@ namespace E_commerceInASP.NET.Controllers
             var products = context.tbl_product.Include(p => p.Category).ToList();
             //ViewBag.checkSession = HttpContext.Session.GetString("customerSession");
             return View(products);
+
+            var featuredProducts = context.tbl_product
+                                  .OrderByDescending(p => p.product_id)
+                                  .Take(8)
+                                  .ToList();
+
+            return View(featuredProducts);
         }
 
         public IActionResult customerLogin()
