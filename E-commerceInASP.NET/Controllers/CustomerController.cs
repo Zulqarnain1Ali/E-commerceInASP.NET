@@ -17,10 +17,6 @@ namespace E_commerceInASP.NET.Controllers
         // 1. Storefront catalog
         public IActionResult Index()
         {
-            var products = context.tbl_product.Include(p => p.Category).ToList();
-            //ViewBag.checkSession = HttpContext.Session.GetString("customerSession");
-            return View(products);
-
             var featuredProducts = context.tbl_product
                                   .OrderByDescending(p => p.product_id)
                                   .Take(8)
