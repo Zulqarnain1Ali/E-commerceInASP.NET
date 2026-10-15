@@ -214,7 +214,7 @@ namespace E_commerceInASP.NET.Controllers
 
 
 
-        //now, we also have to save the feedback and show it to admin
+        //now, we have to show products on the homepage
 
 
 
