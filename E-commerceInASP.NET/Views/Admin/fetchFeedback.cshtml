@@ -38,10 +38,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @{
+                                int count = 1;
+                            }
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td class="fw-bold text-muted">@item.id</td>
+                                    <!-- Display sequential row number (1, 2, 3...) -->
+                                    <td class="fw-bold text-muted">@count</td>
+
                                     <td class="fw-semibold">@item.user_name</td>
                                     <td>
                                         <a href="mailto:@item.user_email" class="text-decoration-none text-primary">
@@ -54,6 +59,7 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
+                                        <!-- Keep the real database ID for backend operations -->
                                         <a asp-action="deleteFeedback"
                                            asp-route-id="@item.id"
                                            onclick="return confirm('Are you sure you want to delete this record?');"
@@ -62,6 +68,7 @@
                                         </a>
                                     </td>
                                 </tr>
+                                count++;
                             }
                         </tbody>
                     </table>

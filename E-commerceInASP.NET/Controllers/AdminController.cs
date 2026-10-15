@@ -385,5 +385,17 @@ namespace E_commerceInASP.NET.Controllers
 
             return View(feedbackList);
         }
+        public IActionResult deleteFeedback(int id)
+        {
+            var feedbackItem = context.tbl_feedback.Find(id);
+
+            if (feedbackItem != null)
+            {
+                context.tbl_feedback.Remove(feedbackItem);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("fetchfeedback");
+        }
     }
 }
