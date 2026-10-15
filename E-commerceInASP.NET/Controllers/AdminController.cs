@@ -20,7 +20,7 @@ namespace E_commerceInASP.NET.Controllers
             this.context = context;
         }
 
-        
+
         public IActionResult Index()
         {
             return View();
@@ -36,7 +36,7 @@ namespace E_commerceInASP.NET.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Admin_Login(string admin_email, string admin_password, bool rememberMe)
         {
-            if(string.IsNullOrEmpty(admin_email) || string.IsNullOrEmpty(admin_password))
+            if (string.IsNullOrEmpty(admin_email) || string.IsNullOrEmpty(admin_password))
             {
                 ModelState.AddModelError("", "Email and password cant be empty.");
                 return View();
@@ -58,13 +58,13 @@ namespace E_commerceInASP.NET.Controllers
                 {
                     IsPersistent = rememberMe,
                     ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(7) : null
-                }; 
+                };
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
                 //cookies code ended
                 return RedirectToAction("Index");
-            
+
             }
             ViewBag.Error = "Invalid Credentials";
             return View();
@@ -77,7 +77,7 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("Admin_Login");     // Sends them back to the login page
         }
 
-       
+
         public IActionResult Profile()
         {
             var adminIdString = User.FindFirst("AdminId")?.Value;
@@ -154,7 +154,7 @@ namespace E_commerceInASP.NET.Controllers
         }
 
         public IActionResult updateCustomer(int id)
-        {   
+        {
             return View(context.tbl_customer.Find(id));
         }
 
@@ -179,7 +179,7 @@ namespace E_commerceInASP.NET.Controllers
                 }
                 existingCustomer.Customer_Image = "/images/customer/" + fileName;
             }
-            
+
             existingCustomer.Customer_Name = customer.Customer_Name;
             existingCustomer.Customer_Email = customer.Customer_Email;
             existingCustomer.Customer_Phone = customer.Customer_Phone;
@@ -207,7 +207,7 @@ namespace E_commerceInASP.NET.Controllers
                 context.SaveChanges();
                 TempData["Message"] = "Customer deleted successfully!";
             }
-            
+
             return RedirectToAction("fetchCustomer");
         }
 
@@ -219,7 +219,7 @@ namespace E_commerceInASP.NET.Controllers
         {
             return View(context.tbl_category.ToList());
         }
-        
+
         public IActionResult addCategory()
         {
             return View();
@@ -374,7 +374,16 @@ namespace E_commerceInASP.NET.Controllers
 
             return RedirectToAction("fetchProducts");
         }
+
+
+
+        public IActionResult fetchFeedback()
+        {
+            var feedbackList = context.tbl_feedback
+                              .OrderByDescending(f => f.id)
+                              .ToList();
+
+            return View(feedbackList);
+        }
     }
 }
-
-// Product CRUD Completed

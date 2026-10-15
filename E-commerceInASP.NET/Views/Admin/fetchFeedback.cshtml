@@ -1,0 +1,72 @@
+﻿@model IEnumerable<E_commerceInASP.NET.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Customer Feedback";
+}
+
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Customer Feedback</h3>
+            <p class="text-muted small mb-0">List of all feedback submitted by visitors.</p>
+        </div>
+        <span class="badge bg-dark px-3 py-2 fs-6">
+            Total: @(Model?.Count() ?? 0)
+        </span>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="text-center py-5">
+                    <h5 class="text-secondary fw-semibold">No feedback records found</h5>
+                    <p class="text-muted small mb-0">New messages will show up here once submitted.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th style="width: 70px;">#</th>
+                                <th style="width: 200px;">User Name</th>
+                                <th style="width: 240px;">Email</th>
+                                <th>Message</th>
+                                <th class="text-center" style="width: 120px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-muted">@item.id</td>
+                                    <td class="fw-semibold">@item.user_name</td>
+                                    <td>
+                                        <a href="mailto:@item.user_email" class="text-decoration-none text-primary">
+                                            @item.user_email
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="p-2 bg-light rounded text-dark small" style="white-space: pre-wrap; max-height: 120px; overflow-y: auto;">
+                                            @item.user_message
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="deleteFeedback"
+                                           asp-route-id="@item.id"
+                                           onclick="return confirm('Are you sure you want to delete this record?');"
+                                           class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
