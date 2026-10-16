@@ -6,10 +6,10 @@ namespace E_commerceInASP.NET.Models
     {
         [Key]
         public int id { get; set; }
-        public int Product_Quantity { get; set; }
-        public Boolean Cart_Status { get; set; }
         public int Product_Id { get; set; }
         public int Customer_Id { get; set; }
+        public int Product_Quantity { get; set; }
+        public Boolean Cart_Status { get; set; }
 
     }
 }

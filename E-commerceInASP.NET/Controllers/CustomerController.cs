@@ -237,8 +237,17 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        public IActionResult addToCart()
+        public IActionResult addToCart(int Prod_id, Cart cart)
         {
+            string isLogin = HttpContext.Session.GetString("customerSession");
+            if(isLogin != null)
+            {
+                return RedirectToAction("customerLogin");
+            }
+            else
+            {
+                cart.Product_Id = Prod_id;
+            }
             return View();
         }
 
@@ -246,82 +255,6 @@ namespace E_commerceInASP.NET.Controllers
 
 
         //cart
-
-//        using Microsoft.EntityFrameworkCore;
-
-//// GET: Customer/cart
-//public IActionResult cart()
-//    {
-//        string customerIdStr = HttpContext.Session.GetString("customerSession");
-//        if (string.IsNullOrEmpty(customerIdStr))
-//        {
-//            return RedirectToAction("customerLogin");
-//        }
-
-//        int customerId = int.Parse(customerIdStr);
-
-//        // Fetch all active cart items for the logged-in customer (Cart_Status == true or 1)
-//        var cartItems = context.tbl_cart
-//                               .Include(c => c.Product)
-//                               .Where(c => c.Customer_Id == customerId && c.Cart_Status == true)
-//                               .ToList();
-
-//        return View(cartItems);
-//    }
-
-//    // POST: Customer/addToCart
-//    [HttpPost]
-//    public IActionResult addToCart(int productId, int quantity = 1)
-//    {
-//        string customerIdStr = HttpContext.Session.GetString("customerSession");
-//        if (string.IsNullOrEmpty(customerIdStr))
-//        {
-//            return RedirectToAction("customerLogin");
-//        }
-
-//        int customerId = int.Parse(customerIdStr);
-
-//        // Check if the customer already has this active item in cart
-//        var existingCartItem = context.tbl_cart.FirstOrDefault(c =>
-//            c.Customer_Id == customerId &&
-//            c.Product_Id == productId &&
-//            c.Cart_Status == true);
-
-//        if (existingCartItem != null)
-//        {
-//            existingCartItem.Product_Quantity += quantity;
-//            context.tbl_cart.Update(existingCartItem);
-//        }
-//        else
-//        {
-//            var newCart = new Cart
-//            {
-//                Customer_Id = customerId,
-//                Product_Id = productId,
-//                Product_Quantity = quantity,
-//                Cart_Status = true // Active item
-//            };
-//            context.tbl_cart.Add(newCart);
-//        }
-
-//        context.SaveChanges();
-//        TempData["CartMessage"] = "Item added to cart successfully!";
-//        return RedirectToAction("cart");
-//    }
-
-//    // GET: Customer/removeFromCart/5
-//    public IActionResult removeFromCart(int id)
-//    {
-//        var cartItem = context.tbl_cart.Find(id);
-//        if (cartItem != null)
-//        {
-//            context.tbl_cart.Remove(cartItem);
-//            context.SaveChanges();
-//        }
-//        return RedirectToAction("cart");
-//    }
-
-
-
-}
+        // video 15, 10min
+    }
 }
