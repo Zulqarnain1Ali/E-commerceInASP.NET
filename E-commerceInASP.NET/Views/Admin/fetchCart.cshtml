@@ -67,8 +67,8 @@
                     <thead class="table-dark">
                         <tr>
                             <th scope="col" class="py-3 ps-3">Cart ID</th>
-                            <th scope="col" class="py-3">Customer ID</th>
-                            <th scope="col" class="py-3">Product ID</th>
+                            <th scope="col" class="py-3">Customer Name</th>
+                            <th scope="col" class="py-3">Product Name</th>
                             <th scope="col" class="py-3 text-center">Quantity</th>
                             <th scope="col" class="py-3">Recorded Total</th>
                             <th scope="col" class="py-3 text-center">Status</th>
@@ -82,13 +82,11 @@
                                 <td class="ps-3 fw-bold text-secondary">#@item.id</td>
                                 <td>
                                     <span class="badge bg-light text-dark border">
-                                        Customer #@item.Customer_Id
-                                    </span>
+@(item.customers?.Customer_Name ?? "Unknown Customer")                                    </span>
                                 </td>
                                 <td>
                                     <span class="badge bg-light text-dark border">
-                                        Product #@item.Product_Id
-                                    </span>
+@(item.products?.Product_Name ?? "Deleted Product")                                    </span>
                                 </td>
                                 <td class="text-center fw-semibold">
                                     @item.Product_Quantity

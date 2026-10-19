@@ -407,7 +407,8 @@ namespace E_commerceInASP.NET.Controllers
         //cart
         public IActionResult fetchCart()
         {
-            return View(context.tbl_cart.ToList());
+            var cart = context.tbl_cart.Include(c => c.products).Include(c => c.customers).ToList();
+            return View(cart);
         }
 
       
@@ -426,5 +427,10 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("fetchCart");
         }
 
-    }
+
+        //delete cart done from admin
+        //customer cart view remaining
+        //cart amount calculation remaining
+
+    } 
 }
