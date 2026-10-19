@@ -8,8 +8,9 @@ namespace E_commerceInASP.NET.Models
         public int id { get; set; }
         public int Product_Id { get; set; }
         public int Customer_Id { get; set; }
-        public int Product_Quantity { get; set; }
-        public Boolean Cart_Status { get; set; }
+        public int Product_Quantity { get; set; }   
+        public int Total_Amount { get; set; }
+        public int Cart_Status { get; set; }
 
     }
 }

@@ -75,16 +75,27 @@
                                 @item.Product_Description
                             </p>
                             
-                            <div class="mt-auto pt-2 d-flex justify-content-between align-items-center border-top">
-                                <span class="fw-bold text-dark fs-5">
-                                    Rs. @item.Product_Price
-                                </span>
-                                <a asp-controller="Customer" 
-                                   asp-action="productDetails" 
-                                   asp-route-id="@item.product_id" 
-                                   class="btn btn-sm btn-outline-dark">
-                                    View Details
-                                </a>
+                            <div class="mt-auto pt-2 border-top">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-bold text-dark fs-5">
+                                        Rs. @item.Product_Price
+                                    </span>
+                                    <a asp-controller="Customer"
+                                       asp-action="productDetails"
+                                       asp-route-id="@item.product_id"
+                                       class="text-decoration-none small text-muted">
+                                        Details &rarr;
+                                    </a>
+                                </div>
+
+                                <!-- Direct Add to Cart Form -->
+                                <form asp-controller="Customer" asp-action="addToCart" method="post">
+                                    <!-- Passes the Product Id matching your action parameter: Prod_id -->
+                                    <input type="hidden" name="Prod_id" value="@item.product_id" />
+                                    <button type="submit" class="btn btn-sm btn-dark w-100 d-flex align-items-center justify-content-center gap-2">
+                                        <span>🛒</span> Add to Cart
+                                    </button>
+                                </form>
                             </div>
                         </div>
 

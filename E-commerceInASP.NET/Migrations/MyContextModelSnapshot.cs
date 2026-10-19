@@ -58,8 +58,8 @@ namespace E_commerceInASP.NET.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<bool>("Cart_Status")
-                        .HasColumnType("bit");
+                    b.Property<int>("Cart_Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("Customer_Id")
                         .HasColumnType("int");
@@ -68,6 +68,9 @@ namespace E_commerceInASP.NET.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Product_Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Total_Amount")
                         .HasColumnType("int");
 
                     b.HasKey("id");

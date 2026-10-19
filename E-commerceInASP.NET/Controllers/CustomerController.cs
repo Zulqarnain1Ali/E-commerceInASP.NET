@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_commerceInASP.NET.Controllers
 {
@@ -242,13 +243,21 @@ namespace E_commerceInASP.NET.Controllers
             string isLogin = HttpContext.Session.GetString("customerSession");
             if(isLogin != null)
             {
-                return RedirectToAction("customerLogin");
+                cart.Product_Id = Prod_id;
+                cart.Customer_Id = int.Parse(isLogin);
+                cart.Product_Quantity = 1;
+                cart.Cart_Status = 0;
+                context.tbl_cart.Add(cart);
+                context.SaveChanges();
+                //TempData["message"] = "Product added in the cart";
+                //return RedirectToAction("allProducts");
+
+                return Json(new { success = true, message = "Added to Cart!" });
             }
             else
             {
-                cart.Product_Id = Prod_id;
+                return RedirectToAction("customerLogin");
             }
-            return View();
         }
 
 
