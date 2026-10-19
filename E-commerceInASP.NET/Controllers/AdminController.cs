@@ -427,6 +427,12 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("fetchCart");
         }
 
+        [HttpPost]
+        public IActionResult updateCart(int id)
+        {
+            return RedirectToAction("fetchCart");
+        }
+
 
         //delete cart done from admin
         //customer cart view remaining
