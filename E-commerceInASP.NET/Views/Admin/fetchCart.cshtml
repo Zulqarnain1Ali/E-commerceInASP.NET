@@ -19,6 +19,15 @@
         </a>
     </div>
 
+    <!-- Feedback Message -->
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <!-- Quick Stats Summary Cards -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
@@ -63,6 +72,7 @@
                             <th scope="col" class="py-3 text-center">Quantity</th>
                             <th scope="col" class="py-3">Recorded Total</th>
                             <th scope="col" class="py-3 text-center">Status</th>
+                            <th scope="col" class="py-3 text-end pe-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,6 +109,18 @@
                                             Checked Out / Processed
                                         </span>
                                     }
+                                </td>
+                                <td class="text-end pe-3">
+                                    <form asp-controller="Admin" 
+                                          asp-action="deleteCart" 
+                                          asp-route-id="@item.id" 
+                                          method="post" 
+                                          class="d-inline"
+                                          onsubmit="return confirm('Are you sure you want to permanently delete Cart Record #@item.id?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Cart Record">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         }

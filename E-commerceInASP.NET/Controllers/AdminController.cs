@@ -385,6 +385,9 @@ namespace E_commerceInASP.NET.Controllers
 
             return View(feedbackList);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult deleteFeedback(int id)
         {
             var feedbackItem = context.tbl_feedback.Find(id);
@@ -393,6 +396,7 @@ namespace E_commerceInASP.NET.Controllers
             {
                 context.tbl_feedback.Remove(feedbackItem);
                 context.SaveChanges();
+                TempData["success"] = "Feedback deleted successfully.";
             }
 
             return RedirectToAction("fetchfeedback");
@@ -406,6 +410,8 @@ namespace E_commerceInASP.NET.Controllers
             return View(context.tbl_cart.ToList());
         }
 
+      
+        [HttpPost]
         public IActionResult deleteCart(int id)
         {
             var cartItem = context.tbl_cart.Find(id);
@@ -414,11 +420,11 @@ namespace E_commerceInASP.NET.Controllers
             {
                 context.tbl_cart.Remove(cartItem);
                 context.SaveChanges();
+                TempData["success"] = "Cart entry removed successfully.";
             }
 
             return RedirectToAction("fetchCart");
         }
-
 
     }
 }
