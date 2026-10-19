@@ -266,7 +266,6 @@ namespace E_commerceInASP.NET.Controllers
         {
             string isLogin = HttpContext.Session.GetString("customerSession");
 
-            // If customer is not logged in, return redirectUrl in JSON
             if (string.IsNullOrEmpty(isLogin))
             {
                 return Json(new { success = false, redirectUrl = Url.Action("customerLogin") });
@@ -275,7 +274,6 @@ namespace E_commerceInASP.NET.Controllers
             int customerId = int.Parse(isLogin);
             int qtyToAdd = quantity < 1 ? 1 : quantity;
 
-            // Check if the item is already in this customer's active cart (Cart_Status == 0)
             var existingItem = context.tbl_cart
                 .FirstOrDefault(c => c.Product_Id == Prod_id && c.Customer_Id == customerId && c.Cart_Status == 0);
 

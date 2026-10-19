@@ -397,5 +397,28 @@ namespace E_commerceInASP.NET.Controllers
 
             return RedirectToAction("fetchfeedback");
         }
+
+
+
+        //cart
+        public IActionResult fetchCart()
+        {
+            return View(context.tbl_cart.ToList());
+        }
+
+        public IActionResult deleteCart(int id)
+        {
+            var cartItem = context.tbl_cart.Find(id);
+
+            if (cartItem != null)
+            {
+                context.tbl_cart.Remove(cartItem);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("fetchCart");
+        }
+
+
     }
 }
