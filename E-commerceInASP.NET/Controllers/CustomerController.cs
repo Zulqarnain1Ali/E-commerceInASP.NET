@@ -238,28 +238,67 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        public IActionResult addToCart(int Prod_id, Cart cart)
+        //public IActionResult addToCart(int Prod_id, Cart cart)
+        //{
+        //    string isLogin = HttpContext.Session.GetString("customerSession");
+        //    if(isLogin != null)
+        //    {
+        //        cart.Product_Id = Prod_id;
+        //        cart.Customer_Id = int.Parse(isLogin);
+        //        cart.Product_Quantity = 1;
+        //        cart.Cart_Status = 0;
+        //        context.tbl_cart.Add(cart);
+        //        context.SaveChanges();
+        //        //TempData["message"] = "Product added in the cart";
+        //        //return RedirectToAction("allProducts");
+
+        //        return Json(new { success = true, message = "Added to Cart!" });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("customerLogin");
+        //    }
+        //}
+
+
+        [HttpPost]
+        public IActionResult addToCart(int Prod_id, int quantity = 1)
         {
             string isLogin = HttpContext.Session.GetString("customerSession");
-            if(isLogin != null)
-            {
-                cart.Product_Id = Prod_id;
-                cart.Customer_Id = int.Parse(isLogin);
-                cart.Product_Quantity = 1;
-                cart.Cart_Status = 0;
-                context.tbl_cart.Add(cart);
-                context.SaveChanges();
-                //TempData["message"] = "Product added in the cart";
-                //return RedirectToAction("allProducts");
 
-                return Json(new { success = true, message = "Added to Cart!" });
+            // If customer is not logged in, return redirectUrl in JSON
+            if (string.IsNullOrEmpty(isLogin))
+            {
+                return Json(new { success = false, redirectUrl = Url.Action("customerLogin") });
+            }
+
+            int customerId = int.Parse(isLogin);
+            int qtyToAdd = quantity < 1 ? 1 : quantity;
+
+            // Check if the item is already in this customer's active cart (Cart_Status == 0)
+            var existingItem = context.tbl_cart
+                .FirstOrDefault(c => c.Product_Id == Prod_id && c.Customer_Id == customerId && c.Cart_Status == 0);
+
+            if (existingItem != null)
+            {
+                existingItem.Product_Quantity += qtyToAdd;
             }
             else
             {
-                return RedirectToAction("customerLogin");
+                var cart = new Cart
+                {
+                    Product_Id = Prod_id,
+                    Customer_Id = customerId,
+                    Product_Quantity = qtyToAdd,
+                    Cart_Status = 0 // 0 = Active cart item
+                };
+                context.tbl_cart.Add(cart);
             }
-        }
 
+            context.SaveChanges();
+
+            return Json(new { success = true, message = "Added to Cart!" });
+        }
 
 
 

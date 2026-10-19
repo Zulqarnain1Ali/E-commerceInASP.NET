@@ -13,12 +13,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const iconSpan = btn.querySelector(".btn-icon");
         const textSpan = btn.querySelector(".btn-text");
 
+        // Check if there is a quantity input on the page (like in productDetails)
+        const qtyInput = document.getElementById("productQuantity");
+        const quantity = qtyInput ? qtyInput.value : 1;
+
         btn.disabled = true;
         iconSpan.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`;
         textSpan.textContent = "Adding...";
 
         const formData = new FormData();
         formData.append("Prod_id", prodId);
+        formData.append("quantity", quantity);
 
         fetch("/Customer/addToCart", {
             method: "POST",

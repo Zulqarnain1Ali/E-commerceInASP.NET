@@ -55,27 +55,34 @@
                 <hr class="my-4" />
 
                 <!-- Purchase / Cart Area -->
-                <form asp-controller="Customer" asp-action="addToCart" method="post">
-                    <input type="hidden" name="productId" value="@Model.product_id" />
-                    
-                    <div class="row g-3 align-items-center mb-4">
-                        <div class="col-auto">
-                            <label class="fw-semibold">Quantity:</label>
-                        </div>
-                        <div class="col-auto" style="width: 100px;">
-                            <input type="number" name="quantity" class="form-control text-center" value="1" min="1" max="20" />
-                        </div>
-                    </div>
+                <!-- Purchase / Cart Area -->
+<div class="purchase-area">
+    <div class="row g-3 align-items-center mb-4">
+        <div class="col-auto">
+            <label for="productQuantity" class="fw-semibold">Quantity:</label>
+        </div>
+        <div class="col-auto" style="width: 100px;">
+            <input type="number" 
+                   id="productQuantity" 
+                   class="form-control text-center" 
+                   value="1" 
+                   min="1" 
+                   max="20" />
+        </div>
+    </div>
 
-                    <div class="d-grid gap-2 d-sm-flex">
-                        <button type="submit" class="btn btn-dark btn-lg px-4 flex-grow-1">
-                            Add to Cart
-                        </button>
-                        <a asp-controller="Customer" asp-action="allProducts" class="btn btn-outline-secondary btn-lg px-3">
-                            Continue Shopping
-                        </a>
-                    </div>
-                </form>
+    <div class="d-grid gap-2 d-sm-flex">
+        <button type="button" 
+                class="btn btn-dark btn-lg px-4 flex-grow-1 d-flex align-items-center justify-content-center gap-2 cart-btn"
+                data-prod-id="@Model.product_id">
+            <span class="btn-icon">🛒</span>
+            <span class="btn-text">Add to Cart</span>
+        </button>
+        <a asp-controller="Customer" asp-action="allProducts" class="btn btn-outline-secondary btn-lg px-3">
+            Continue Shopping
+        </a>
+    </div>
+</div>
 
                 <!-- Store Perks -->
                 <div class="mt-4 pt-3 border-top">
