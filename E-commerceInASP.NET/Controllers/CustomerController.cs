@@ -271,7 +271,12 @@ namespace E_commerceInASP.NET.Controllers
                 };
                 context.tbl_cart.Add(cart);
             }
+            var product = context.tbl_product.Find(cart.Product_Id);
+            int unitPrice = 0;
+            int.TryParse(product?.Product_Price?.ToString(), out unitPrice);
 
+            cart.Total_Amount = unitPrice * cart.Product_Quantity;
+            context.tbl_cart.Add(cart);
             context.SaveChanges();
 
             return Json(new { success = true, message = "Added to Cart!" });
@@ -322,6 +327,7 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult updateCartQuantity(int cartId, int quantity)
         {
+            var cartItem = context.tbl_cart.Include(c => c.products).FirstOrDefault(c => c.id == cartId);
             string customerId = HttpContext.Session.GetString("customerSession");
             if (string.IsNullOrEmpty(customerId))
             {
@@ -337,6 +343,11 @@ namespace E_commerceInASP.NET.Controllers
             if (cartItem != null && cartItem.Customer_Id == int.Parse(customerId))
             {
                 cartItem.Product_Quantity = quantity;
+
+                int unitPrice = 0;
+                int.TryParse(cartItem.products?.Product_Price?.ToString(), out unitPrice);
+                cartItem.Total_Amount = unitPrice * quantity;
+
                 context.tbl_cart.Update(cartItem);
                 context.SaveChanges();
             }
