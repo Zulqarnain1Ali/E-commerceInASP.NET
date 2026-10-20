@@ -116,30 +116,44 @@
                                             break;
                                     }
                                 </td>
+
                                 <td class="text-end pe-3">
-                                    <!-- Status update action (uses your exact existing updateCart method) -->
+                                    <!-- REVERT BUTTON: Shown if already Shipped (2) or Delivered (3) -->
+                                    @if (item.Cart_Status == 2 || item.Cart_Status == 3)
+                                    {
+                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline me-1">
+                                            <input type="hidden" name="actionType" value="prev" />
+                                            <button type="submit" class="btn btn-sm btn-outline-warning" title="Revert to previous stage">
+                                                ↺ Revert
+                                            </button>
+                                        </form>
+                                    }
+
+                                    <!-- FORWARD BUTTON: Shown if Pending (1) or Shipped (2) -->
                                     @if (item.Cart_Status == 1)
                                     {
-                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-outline-primary me-1" title="Ship / Process Order">
-                                                Ship &rarr;
+                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline me-1">
+                                            <input type="hidden" name="actionType" value="next" />
+                                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Advance to Shipped">
+                                                Shipped &rarr;
                                             </button>
                                         </form>
                                     }
                                     else if (item.Cart_Status == 2)
                                     {
-                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline">
-                                            <button type="submit" class="btn btn-sm btn-outline-success me-1" title="Mark as Delivered">
-                                                Deliver ✓
+                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline me-1">
+                                            <input type="hidden" name="actionType" value="next" />
+                                            <button type="submit" class="btn btn-sm btn-outline-success" title="Advance to Delivered">
+                                                Delivered ✓
                                             </button>
                                         </form>
                                     }
 
-                                    <!-- Delete action -->
-                                    <form asp-controller="Admin" 
-                                          asp-action="deleteCart" 
-                                          asp-route-id="@item.id" 
-                                          method="post" 
+                                    <!-- DELETE BUTTON -->
+                                    <form asp-controller="Admin"
+                                          asp-action="deleteCart"
+                                          asp-route-id="@item.id"
+                                          method="post"
                                           class="d-inline"
                                           onsubmit="return confirm('Permanently delete entry #@item.id?');">
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Cart Record">
