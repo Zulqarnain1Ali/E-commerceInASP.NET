@@ -293,7 +293,7 @@ namespace E_commerceInASP.NET.Controllers
             int parsedCustomerId = int.Parse(customerId);
 
             var cart = context.tbl_cart
-                              .Where(c => c.Customer_Id == parsedCustomerId && c.Cart_Status == 0)
+                              .Where(c => c.Customer_Id == int.Parse(customerId) && c.Cart_Status == 0)
                               .Include(c => c.products)
                               .ToList();
 
@@ -321,6 +321,55 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("viewCart");
         }
 
+        [HttpPost]
+        public IActionResult updateCartQuantity(int cartId, int quantity)
+        {
+            string customerId = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            if (quantity <= 0)
+            {
+                return RedirectToAction("deleteCart", new { id = cartId });
+            }
+
+            var cartItem = context.tbl_cart.Find(cartId);
+            if (cartItem != null && cartItem.Customer_Id == int.Parse(customerId))
+            {
+                cartItem.Product_Quantity = quantity;
+                context.tbl_cart.Update(cartItem);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("viewCart");
+        }
+
+
+
+
+
+        public IActionResult checkout()
+        {
+            string customerId = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            var activeCart = context.tbl_cart
+                                    .Where(c => c.Customer_Id == int.Parse(customerId) && c.Cart_Status == 0)
+                                    .Include(c => c.products)
+                                    .ToList();
+
+            if (!activeCart.Any())
+            {
+                return RedirectToAction("viewCart");
+            }
+
+            return View(activeCart);
+        }
         //cart
         // video 15, 10min
     }
