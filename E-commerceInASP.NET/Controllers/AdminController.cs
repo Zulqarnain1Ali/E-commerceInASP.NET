@@ -430,8 +430,29 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult updateCart(int id)
         {
+            var cartItem = context.tbl_cart.Find(id);
+
+            if (cartItem != null)
+            {
+                // Toggle status: if 0 make it 1, if already 1 make it 0
+                cartItem.Cart_Status = (cartItem.Cart_Status == 0) ? 1 : 0;
+
+                context.tbl_cart.Update(cartItem);
+                context.SaveChanges();
+
+                string statusText = (cartItem.Cart_Status != 0) ? "Checked Out / Processed" : "Active / In Cart";
+                TempData["success"] = $"Cart #{id} status updated to '{statusText}'.";
+            }
+
             return RedirectToAction("fetchCart");
         }
+
+
+
+
+
+
+
 
 
         //delete cart done from admin

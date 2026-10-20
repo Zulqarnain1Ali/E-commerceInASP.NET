@@ -109,17 +109,38 @@
                                     }
                                 </td>
                                 <td class="text-end pe-3">
-                                    <form asp-controller="Admin" 
-                                          asp-action="deleteCart" 
-                                          asp-route-id="@item.id" 
-                                          method="post" 
-                                          class="d-inline"
-                                          onsubmit="return confirm('Are you sure you want to permanently delete Cart Record #@item.id?');">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Cart Record">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+    <!-- Status Toggle Button Form -->
+    <form asp-controller="Admin" 
+          asp-action="updateCart" 
+          asp-route-id="@item.id" 
+          method="post" 
+          class="d-inline me-1">
+        @if (item.Cart_Status == 0)
+        {
+            <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Processed / Ordered">
+                ✓ Mark Processed
+            </button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-sm btn-outline-warning" title="Revert back to Active in Cart">
+                ↺ Revert to Active
+            </button>
+        }
+    </form>
+
+    <!-- Delete Button Form -->
+    <form asp-controller="Admin" 
+          asp-action="deleteCart" 
+          asp-route-id="@item.id" 
+          method="post" 
+          class="d-inline"
+          onsubmit="return confirm('Are you sure you want to permanently delete Cart Record #@item.id?');">
+        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Cart Record">
+            Delete
+        </button>
+    </form>
+</td>
                             </tr>
                         }
                     </tbody>
