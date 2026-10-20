@@ -356,6 +356,7 @@ namespace E_commerceInASP.NET.Controllers
                 return RedirectToAction("customerLogin");
             }
 
+            int parsedCustomerId = int.Parse(customerId);
             var activeCart = context.tbl_cart
                                     .Where(c => c.Customer_Id == int.Parse(customerId) && c.Cart_Status == 0)
                                     .Include(c => c.products)
@@ -366,6 +367,8 @@ namespace E_commerceInASP.NET.Controllers
                 return RedirectToAction("viewCart");
             }
 
+            var customer = context.tbl_customer.Find(parsedCustomerId);
+            ViewBag.Customer = customer;
             return View(activeCart);
         }
 

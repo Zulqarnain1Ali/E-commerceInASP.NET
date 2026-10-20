@@ -41,22 +41,22 @@
                 <form asp-controller="Customer" asp-action="placeOrder" method="post">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Full Name</label>
-                        <input type="text" class="form-control" value="@customer?.Customer_Name" readonly />
+                        <input type="text" class="form-control" value="@(customer?.Customer_Name ?? "")" readonly />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Email Address</label>
-                        <input type="email" class="form-control" value="@customer?.Customer_Email" readonly />
+                        <input type="email" class="form-control" value="@(customer?.Customer_Email ?? "")" readonly />
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Contact Phone Number</label>
-                        <input type="tel" name="contactNumber" class="form-control" placeholder="03XXXXXXXXX" required />
+                        <input type="tel" name="contactNumber" class="form-control" value="@(customer?.Customer_Phone ?? "")" placeholder="03XXXXXXXXX" required />
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Delivery Address</label>
-                        <textarea name="shippingAddress" rows="3" class="form-control" placeholder="House/Flat No., Street, Area, City" required></textarea>
+                        <textarea name="shippingAddress" rows="3" class="form-control" placeholder="House/Flat No., Street, Area, City" required>@(customer?.Customer_Address ?? "")</textarea>
                     </div>
 
                     <h5 class="fw-bold mb-3">Payment Method</h5>
@@ -78,31 +78,38 @@
         <!-- Order Summary Sidebar -->
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm p-4">
-                <h5 class="fw-bold mb-3">Items in Order (@Model.Sum(c => c.Product_Quantity))</h5>
+                <h5 class="fw-bold mb-3">Items in Order (@(Model?.Sum(c => c.Product_Quantity) ?? 0))</h5>
 
                 <div class="list-group list-group-flush mb-3">
-                    @foreach (var item in Model)
+                    @if (Model != null)
                     {
-                        decimal itemPrice = 0;
-                        decimal.TryParse(item.products?.Product_Price?.ToString(), out itemPrice);
+                        foreach (var item in Model)
+                        {
+                            decimal itemPrice = 0;
+                            decimal.TryParse(item.products?.Product_Price?.ToString(), out itemPrice);
 
-                        <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="ratio ratio-1x1 bg-light rounded overflow-hidden" style="width: 50px; height: 50px;">
-                                    @if (!string.IsNullOrEmpty(item.products?.Product_Image))
-                                    {
-                                        <img src="@item.products.Product_Image" class="object-fit-cover" alt="@item.products.Product_Name" />
-                                    }
+                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="ratio ratio-1x1 bg-light rounded overflow-hidden" style="width: 50px; height: 50px;">
+                                        @if (!string.IsNullOrEmpty(item.products?.Product_Image))
+                                        {
+                                            <img src="@item.products.Product_Image" class="object-fit-cover" alt="@item.products.Product_Name" />
+                                        }
+                                        else
+                                        {
+                                            <div class="d-flex align-items-center justify-content-center text-muted small">No Img</div>
+                                        }
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold text-truncate" style="max-width: 180px;">
+                                            @(item.products?.Product_Name ?? "Product")
+                                        </h6>
+                                        <small class="text-muted">Qty: @item.Product_Quantity &times; Rs. @itemPrice</small>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h6 class="mb-0 fw-semibold text-truncate" style="max-width: 180px;">
-                                        @(item.products?.Product_Name ?? "Product")
-                                    </h6>
-                                    <small class="text-muted">Qty: @item.Product_Quantity &times; Rs. @itemPrice</small>
-                                </div>
+                                <span class="fw-bold text-dark">Rs. @(itemPrice * item.Product_Quantity)</span>
                             </div>
-                            <span class="fw-bold text-dark">Rs. @(itemPrice * item.Product_Quantity)</span>
-                        </div>
+                        }
                     }
                 </div>
 
