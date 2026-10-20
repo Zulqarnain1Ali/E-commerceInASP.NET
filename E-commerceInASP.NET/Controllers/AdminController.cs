@@ -437,7 +437,6 @@ namespace E_commerceInASP.NET.Controllers
             {
                 if (actionType == "next")
                 {
-                    // Advance: 1 (Pending) -> 2 (Shipped) -> 3 (Delivered)
                     if (cartItem.Cart_Status == 1)
                     {
                         cartItem.Cart_Status = 2;
@@ -451,7 +450,6 @@ namespace E_commerceInASP.NET.Controllers
                 }
                 else if (actionType == "prev")
                 {
-                    // Revert: 3 (Delivered) -> 2 (Shipped) -> 1 (Pending)
                     if (cartItem.Cart_Status == 3)
                     {
                         cartItem.Cart_Status = 2;
