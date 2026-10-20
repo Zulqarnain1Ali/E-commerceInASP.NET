@@ -287,17 +287,15 @@ namespace E_commerceInASP.NET.Controllers
                 return RedirectToAction("customerLogin");
             }
 
-            List<Category> category = context.tbl_category.ToList();
-            ViewData["category"] = category;
-
             int parsedCustomerId = int.Parse(customerId);
 
-            var cart = context.tbl_cart
-                              .Where(c => c.Customer_Id == int.Parse(customerId) && c.Cart_Status == 0)
-                              .Include(c => c.products)
-                              .ToList();
+            // Only load items currently in the shopping cart (0)
+            var cartItems = context.tbl_cart
+                                   .Where(c => c.Customer_Id == parsedCustomerId && c.Cart_Status == 0)
+                                   .Include(c => c.products)
+                                   .ToList();
 
-            return View(cart);
+            return View(cartItems);
         }
 
 
@@ -369,6 +367,39 @@ namespace E_commerceInASP.NET.Controllers
             }
 
             return View(activeCart);
+        }
+
+
+
+        [HttpPost]
+        public IActionResult placeOrder(string contactNumber, string shippingAddress)
+        {
+            string customerId = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            int parsedCustomerId = int.Parse(customerId);
+
+            // Get all items in cart (0)
+            var cartItems = context.tbl_cart
+                                   .Where(c => c.Customer_Id == parsedCustomerId && c.Cart_Status == 0)
+                                   .ToList();
+
+            if (cartItems.Any())
+            {
+                // Move from In-Cart (0) to Placed/Pending (1)
+                foreach (var item in cartItems)
+                {
+                    item.Cart_Status = 1;
+                }
+
+                context.SaveChanges();
+                TempData["CartMessage"] = "Your order has been placed! Admin will process it shortly.";
+            }
+
+            return RedirectToAction("Index");
         }
         //cart
         // video 15, 10min

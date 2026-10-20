@@ -407,7 +407,7 @@ namespace E_commerceInASP.NET.Controllers
         //cart
         public IActionResult fetchCart()
         {
-            var cart = context.tbl_cart.Include(c => c.products).Include(c => c.customers).ToList();
+            var cart = context.tbl_cart.Include(c => c.products).Include(c => c.customers).OrderByDescending(c => c.id).ToList();
             return View(cart);
         }
 
@@ -434,14 +434,25 @@ namespace E_commerceInASP.NET.Controllers
 
             if (cartItem != null)
             {
-                // Toggle status: if 0 make it 1, if already 1 make it 0
-                cartItem.Cart_Status = (cartItem.Cart_Status == 0) ? 1 : 0;
+                if (cartItem.Cart_Status == 1)
+                {
+                    cartItem.Cart_Status = 2;
+                    TempData["success"] = $"Order #{id} marked as Processed / Shipped.";
+                }
+                else if (cartItem.Cart_Status == 2)
+                {
+                    cartItem.Cart_Status = 3;
+                    TempData["success"] = $"Order #{id} marked as Delivered / Completed.";
+                }
+                else if (cartItem.Cart_Status == 3)
+                {
+                    // Optional: Revert back to Processed if clicked again
+                    cartItem.Cart_Status = 2;
+                    TempData["success"] = $"Order #{id} status reverted to Processed.";
+                }
 
                 context.tbl_cart.Update(cartItem);
                 context.SaveChanges();
-
-                string statusText = (cartItem.Cart_Status != 0) ? "Checked Out / Processed" : "Active / In Cart";
-                TempData["success"] = $"Cart #{id} status updated to '{statusText}'.";
             }
 
             return RedirectToAction("fetchCart");
