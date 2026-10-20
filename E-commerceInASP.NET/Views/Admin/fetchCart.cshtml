@@ -3,23 +3,22 @@
 @{
     ViewData["Title"] = "Cart Management - Admin";
     var totalRecords = Model?.Count() ?? 0;
-    var activeCarts = Model?.Count(c => c.Cart_Status == 0) ?? 0;
-    var completedCarts = Model?.Count(c => c.Cart_Status != 0) ?? 0;
+    var inCart = Model?.Count(c => c.Cart_Status == 0) ?? 0;
+    var pendingOrders = Model?.Count(c => c.Cart_Status == 1) ?? 0;
+    var completedOrders = Model?.Count(c => c.Cart_Status >= 2) ?? 0;
 }
 
 <div class="container-fluid my-4 px-4">
-    <!-- Header -->
     <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom">
         <div>
-            <h2 class="fw-bold mb-1">Customer Carts</h2>
-            <p class="text-muted small mb-0">Overview of all active and checked-out cart items across the store.</p>
+            <h2 class="fw-bold mb-1">Customer Carts & Orders</h2>
+            <p class="text-muted small mb-0">Overview of all active cart items and incoming customer orders.</p>
         </div>
         <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm">
             &larr; Back to Dashboard
         </a>
     </div>
 
-    <!-- Feedback Message -->
     @if (TempData["success"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -28,29 +27,34 @@
         </div>
     }
 
-    <!-- Quick Stats Summary Cards -->
+    <!-- Stats Summary -->
     <div class="row g-3 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3 bg-light">
-                <span class="text-muted small text-uppercase fw-semibold">Total Cart Entries</span>
+                <span class="text-muted small text-uppercase fw-semibold">Total Entries</span>
                 <h3 class="fw-bold text-dark mb-0">@totalRecords</h3>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card border-0 shadow-sm p-3 bg-light border-start border-warning border-4">
-                <span class="text-muted small text-uppercase fw-semibold">Active / Pending in Cart</span>
-                <h3 class="fw-bold text-warning mb-0">@activeCarts</h3>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 bg-light border-start border-secondary border-4">
+                <span class="text-muted small text-uppercase fw-semibold">In Customer Cart</span>
+                <h3 class="fw-bold text-secondary mb-0">@inCart</h3>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm p-3 bg-light border-start border-warning border-4">
+                <span class="text-muted small text-uppercase fw-semibold">New / Pending Orders</span>
+                <h3 class="fw-bold text-warning mb-0">@pendingOrders</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card border-0 shadow-sm p-3 bg-light border-start border-success border-4">
-                <span class="text-muted small text-uppercase fw-semibold">Ordered / Checked Out</span>
-                <h3 class="fw-bold text-success mb-0">@completedCarts</h3>
+                <span class="text-muted small text-uppercase fw-semibold">Processed & Delivered</span>
+                <h3 class="fw-bold text-success mb-0">@completedOrders</h3>
             </div>
         </div>
     </div>
 
-    <!-- Data Table -->
     @if (Model == null || !Model.Any())
     {
         <div class="text-center py-5 border rounded-3 bg-light my-3">
@@ -66,11 +70,10 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-dark">
                         <tr>
-                            <th scope="col" class="py-3 ps-3">Cart ID</th>
+                            <th scope="col" class="py-3 ps-3">ID</th>
                             <th scope="col" class="py-3">Customer Name</th>
                             <th scope="col" class="py-3">Product Name</th>
                             <th scope="col" class="py-3 text-center">Quantity</th>
-                            <th scope="col" class="py-3">Recorded Total</th>
                             <th scope="col" class="py-3 text-center">Status</th>
                             <th scope="col" class="py-3 text-end pe-3">Actions</th>
                         </tr>
@@ -82,65 +85,68 @@
                                 <td class="ps-3 fw-bold text-secondary">#@item.id</td>
                                 <td>
                                     <span class="badge bg-light text-dark border">
-@(item.customers?.Customer_Name ?? "Unknown Customer")                                    </span>
+                                        @(item.customers?.Customer_Name ?? "Unknown Customer")
+                                    </span>
                                 </td>
                                 <td>
                                     <span class="badge bg-light text-dark border">
-@(item.products?.Product_Name ?? "Deleted Product")                                    </span>
+                                        @(item.products?.Product_Name ?? "Deleted Product")
+                                    </span>
                                 </td>
                                 <td class="text-center fw-semibold">
                                     @item.Product_Quantity
                                 </td>
-                                <td>
-                                    Rs. @item.Total_Amount
-                                </td>
                                 <td class="text-center">
-                                    @if (item.Cart_Status == 0)
+                                    @switch (item.Cart_Status)
                                     {
-                                        <span class="badge bg-warning text-dark px-3 py-2">
-                                            Active / In Cart
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-success px-3 py-2">
-                                            Checked Out / Processed
-                                        </span>
+                                        case 0:
+                                            <span class="badge bg-secondary px-3 py-2">In Cart</span>
+                                            break;
+                                        case 1:
+                                            <span class="badge bg-warning text-dark px-3 py-2">Pending Order</span>
+                                            break;
+                                        case 2:
+                                            <span class="badge bg-primary px-3 py-2">Processed / Shipped</span>
+                                            break;
+                                        case 3:
+                                            <span class="badge bg-success px-3 py-2">Delivered</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-dark px-3 py-2">Status @item.Cart_Status</span>
+                                            break;
                                     }
                                 </td>
                                 <td class="text-end pe-3">
-    <!-- Status Toggle Button Form -->
-    <form asp-controller="Admin" 
-          asp-action="updateCart" 
-          asp-route-id="@item.id" 
-          method="post" 
-          class="d-inline me-1">
-        @if (item.Cart_Status == 0)
-        {
-            <button type="submit" class="btn btn-sm btn-outline-success" title="Mark as Processed / Ordered">
-                ✓ Mark Processed
-            </button>
-        }
-        else
-        {
-            <button type="submit" class="btn btn-sm btn-outline-warning" title="Revert back to Active in Cart">
-                ↺ Revert to Active
-            </button>
-        }
-    </form>
+                                    <!-- Status update action (uses your exact existing updateCart method) -->
+                                    @if (item.Cart_Status == 1)
+                                    {
+                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-primary me-1" title="Ship / Process Order">
+                                                Ship &rarr;
+                                            </button>
+                                        </form>
+                                    }
+                                    else if (item.Cart_Status == 2)
+                                    {
+                                        <form asp-controller="Admin" asp-action="updateCart" asp-route-id="@item.id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-success me-1" title="Mark as Delivered">
+                                                Deliver ✓
+                                            </button>
+                                        </form>
+                                    }
 
-    <!-- Delete Button Form -->
-    <form asp-controller="Admin" 
-          asp-action="deleteCart" 
-          asp-route-id="@item.id" 
-          method="post" 
-          class="d-inline"
-          onsubmit="return confirm('Are you sure you want to permanently delete Cart Record #@item.id?');">
-        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Cart Record">
-            Delete
-        </button>
-    </form>
-</td>
+                                    <!-- Delete action -->
+                                    <form asp-controller="Admin" 
+                                          asp-action="deleteCart" 
+                                          asp-route-id="@item.id" 
+                                          method="post" 
+                                          class="d-inline"
+                                          onsubmit="return confirm('Permanently delete entry #@item.id?');">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Cart Record">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         }
                     </tbody>
