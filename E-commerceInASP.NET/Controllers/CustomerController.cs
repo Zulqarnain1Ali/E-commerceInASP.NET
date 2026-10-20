@@ -300,6 +300,12 @@ namespace E_commerceInASP.NET.Controllers
 
 
 
+        public IActionResult viewCart()
+        {
+            return view
+        }
+
+
         //cart
         // video 15, 10min
     }
