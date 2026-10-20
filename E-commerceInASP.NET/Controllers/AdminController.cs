@@ -429,27 +429,39 @@ namespace E_commerceInASP.NET.Controllers
 
 
         [HttpPost]
-        public IActionResult updateCart(int id)
+        public IActionResult updateCart(int id, string actionType = "next")
         {
             var cartItem = context.tbl_cart.Find(id);
 
             if (cartItem != null)
             {
-                if (cartItem.Cart_Status == 1)
+                if (actionType == "next")
                 {
-                    cartItem.Cart_Status = 2;
-                    TempData["success"] = $"Order #{id} marked as Processed / Shipped.";
+                    // Advance: 1 (Pending) -> 2 (Shipped) -> 3 (Delivered)
+                    if (cartItem.Cart_Status == 1)
+                    {
+                        cartItem.Cart_Status = 2;
+                        TempData["success"] = $"Order #{id} moved to Processed / Shipped.";
+                    }
+                    else if (cartItem.Cart_Status == 2)
+                    {
+                        cartItem.Cart_Status = 3;
+                        TempData["success"] = $"Order #{id} moved to Delivered.";
+                    }
                 }
-                else if (cartItem.Cart_Status == 2)
+                else if (actionType == "prev")
                 {
-                    cartItem.Cart_Status = 3;
-                    TempData["success"] = $"Order #{id} marked as Delivered / Completed.";
-                }
-                else if (cartItem.Cart_Status == 3)
-                {
-                    // Optional: Revert back to Processed if clicked again
-                    cartItem.Cart_Status = 2;
-                    TempData["success"] = $"Order #{id} status reverted to Processed.";
+                    // Revert: 3 (Delivered) -> 2 (Shipped) -> 1 (Pending)
+                    if (cartItem.Cart_Status == 3)
+                    {
+                        cartItem.Cart_Status = 2;
+                        TempData["success"] = $"Order #{id} reverted back to Shipped.";
+                    }
+                    else if (cartItem.Cart_Status == 2)
+                    {
+                        cartItem.Cart_Status = 1;
+                        TempData["success"] = $"Order #{id} reverted back to Pending.";
+                    }
                 }
 
                 context.tbl_cart.Update(cartItem);
