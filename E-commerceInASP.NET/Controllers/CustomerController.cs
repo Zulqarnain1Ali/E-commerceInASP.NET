@@ -301,7 +301,7 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult deleteCart(int id)
         {
             string customerId = HttpContext.Session.GetString("customerSession");
