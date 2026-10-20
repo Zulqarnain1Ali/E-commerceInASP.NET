@@ -238,27 +238,6 @@ namespace E_commerceInASP.NET.Controllers
         }
 
 
-        //public IActionResult addToCart(int Prod_id, Cart cart)
-        //{
-        //    string isLogin = HttpContext.Session.GetString("customerSession");
-        //    if(isLogin != null)
-        //    {
-        //        cart.Product_Id = Prod_id;
-        //        cart.Customer_Id = int.Parse(isLogin);
-        //        cart.Product_Quantity = 1;
-        //        cart.Cart_Status = 0;
-        //        context.tbl_cart.Add(cart);
-        //        context.SaveChanges();
-        //        //TempData["message"] = "Product added in the cart";
-        //        //return RedirectToAction("allProducts");
-
-        //        return Json(new { success = true, message = "Added to Cart!" });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("customerLogin");
-        //    }
-        //}
 
 
         [HttpPost]
@@ -321,6 +300,26 @@ namespace E_commerceInASP.NET.Controllers
             return View(cart);
         }
 
+
+        [HttpPost]
+        public IActionResult deleteCart(int id)
+        {
+            string customerId = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            var cartItem = context.tbl_cart.Find(id);
+            if (cartItem != null)
+            {
+                context.tbl_cart.Remove(cartItem);
+                context.SaveChanges();
+                TempData["CartMessage"] = "Item removed from your cart.";
+            }
+
+            return RedirectToAction("viewCart");
+        }
 
         //cart
         // video 15, 10min
