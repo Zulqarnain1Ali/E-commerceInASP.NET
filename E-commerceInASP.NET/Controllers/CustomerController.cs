@@ -253,12 +253,19 @@ namespace E_commerceInASP.NET.Controllers
             int customerId = int.Parse(isLogin);
             int qtyToAdd = quantity < 1 ? 1 : quantity;
 
+            // Fetch product to get its unit price
+            var product = context.tbl_product.Find(Prod_id);
+            int unitPrice = 0;
+            int.TryParse(product?.Product_Price?.ToString(), out unitPrice);
+
             var existingItem = context.tbl_cart
                 .FirstOrDefault(c => c.Product_Id == Prod_id && c.Customer_Id == customerId && c.Cart_Status == 0);
 
             if (existingItem != null)
             {
                 existingItem.Product_Quantity += qtyToAdd;
+                existingItem.Total_Amount = existingItem.Product_Quantity * unitPrice;
+                context.tbl_cart.Update(existingItem);
             }
             else
             {
@@ -267,16 +274,12 @@ namespace E_commerceInASP.NET.Controllers
                     Product_Id = Prod_id,
                     Customer_Id = customerId,
                     Product_Quantity = qtyToAdd,
+                    Total_Amount = qtyToAdd * unitPrice,
                     Cart_Status = 0 // 0 = Active cart item
                 };
                 context.tbl_cart.Add(cart);
             }
-            var product = context.tbl_product.Find(cart.Product_Id);
-            int unitPrice = 0;
-            int.TryParse(product?.Product_Price?.ToString(), out unitPrice);
 
-            cart.Total_Amount = unitPrice * cart.Product_Quantity;
-            context.tbl_cart.Add(cart);
             context.SaveChanges();
 
             return Json(new { success = true, message = "Added to Cart!" });
@@ -327,7 +330,6 @@ namespace E_commerceInASP.NET.Controllers
         [HttpPost]
         public IActionResult updateCartQuantity(int cartId, int quantity)
         {
-            var cartItem = context.tbl_cart.Include(c => c.products).FirstOrDefault(c => c.id == cartId);
             string customerId = HttpContext.Session.GetString("customerSession");
             if (string.IsNullOrEmpty(customerId))
             {
@@ -339,13 +341,15 @@ namespace E_commerceInASP.NET.Controllers
                 return RedirectToAction("deleteCart", new { id = cartId });
             }
 
-            var cartItem = context.tbl_cart.Find(cartId);
+            var cartItem = context.tbl_cart.Include(c => c.products).FirstOrDefault(c => c.id == cartId);
+
             if (cartItem != null && cartItem.Customer_Id == int.Parse(customerId))
             {
                 cartItem.Product_Quantity = quantity;
 
                 int unitPrice = 0;
                 int.TryParse(cartItem.products?.Product_Price?.ToString(), out unitPrice);
+
                 cartItem.Total_Amount = unitPrice * quantity;
 
                 context.tbl_cart.Update(cartItem);
