@@ -302,7 +302,23 @@ namespace E_commerceInASP.NET.Controllers
 
         public IActionResult viewCart()
         {
-            return view
+            string customerId = HttpContext.Session.GetString("customerSession");
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return RedirectToAction("customerLogin");
+            }
+
+            List<Category> category = context.tbl_category.ToList();
+            ViewData["category"] = category;
+
+            int parsedCustomerId = int.Parse(customerId);
+
+            var cart = context.tbl_cart
+                              .Where(c => c.Customer_Id == parsedCustomerId && c.Cart_Status == 0)
+                              .Include(c => c.products)
+                              .ToList();
+
+            return View(cart);
         }
 
 

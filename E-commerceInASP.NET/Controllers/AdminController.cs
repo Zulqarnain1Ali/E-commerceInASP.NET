@@ -453,10 +453,6 @@ namespace E_commerceInASP.NET.Controllers
 
 
 
-
-
-        //delete cart done from admin
-        //customer cart view remaining
         //cart amount calculation remaining
 
     } 
