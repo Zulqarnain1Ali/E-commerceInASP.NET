@@ -427,6 +427,7 @@ namespace E_commerceInASP.NET.Controllers
             return RedirectToAction("fetchCart");
         }
 
+
         [HttpPost]
         public IActionResult updateCart(int id)
         {

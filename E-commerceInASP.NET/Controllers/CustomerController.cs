@@ -399,12 +399,21 @@ namespace E_commerceInASP.NET.Controllers
                 }
 
                 context.SaveChanges();
-                TempData["CartMessage"] = "Your order has been placed! Admin will process it shortly.";
+                //TempData["CartMessage"] = "Your order has been placed! Admin will process it shortly.";
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("orderSuccess");
         }
-        //cart
-        // video 15, 10min
+
+
+        [HttpGet]
+        public IActionResult orderSuccess()
+        {
+            return View();
+        }
+
+
+
+        
     }
 }
