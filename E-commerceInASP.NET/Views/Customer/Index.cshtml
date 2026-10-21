@@ -1,152 +1,223 @@
 ﻿@model IEnumerable<E_commerceInASP.NET.Models.Product>
 
 @{
-    ViewData["Title"] = "Mobile Store - Home";
+    ViewData["Title"] = "Storefront — Discover Modern Tech";
+    var categories = ViewData["category"] as List<E_commerceInASP.NET.Models.Category>;
 }
 
-<!-- Custom Inline Tweaks to match the Clean Tech UI -->
 <style>
-    .hero-section {
-        background-color: #f7f9fc;
-        border-radius: 20px;
+    :root {
+        --surface-card: #ffffff;
+        --surface-subtle: #f8fafc;
+        --border-subtle: #e2e8f0;
+        --text-headline: #0f172a;
+        --text-body: #64748b;
+        --accent-primary: #0f172a;
     }
 
-    .btn-brand-blue {
-        background-color: #2563eb;
-        border-color: #2563eb;
-        color: #ffffff;
+    /* Minimal Hero */
+    .hero-editorial {
+        background: radial-gradient(circle at 80% 20%, #f1f5f9 0%, #fafafa 100%);
+        border: 1px solid var(--border-subtle);
+        border-radius: 24px;
+    }
+
+    /* Category Pill */
+    .filter-chip {
+        display: inline-block;
+        padding: 0.45rem 1.15rem;
+        border-radius: 9999px;
+        background: #ffffff;
+        border: 1px solid var(--border-subtle);
+        color: var(--text-headline);
         font-weight: 500;
-        border-radius: 8px;
-        transition: all 0.2s ease-in-out;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-        .btn-brand-blue:hover {
-            background-color: #1d4ed8;
-            border-color: #1d4ed8;
+        .filter-chip:hover, .filter-chip.active {
+            background: var(--accent-primary);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            border-color: var(--accent-primary);
         }
 
-    .product-card {
-        border: 1px solid #edf2f7;
-        border-radius: 16px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        background-color: #ffffff;
+    /* Product Cards */
+    .store-card {
+        background: #ffffff;
+        border: 1px solid var(--border-subtle);
+        border-radius: 20px;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        position: relative;
     }
 
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        .store-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08);
+            border-color: #cbd5e1;
         }
 
-    .product-img-container {
-        height: 220px;
+    .img-frame {
+        height: 230px;
+        background: #f8fafc;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 1.5rem;
+        overflow: hidden;
+        position: relative;
     }
 
-        .product-img-container img {
-            max-height: 100%;
-            max-width: 100%;
+        .img-frame img {
+            max-height: 80%;
+            max-width: 80%;
             object-fit: contain;
+            transition: transform 0.3s ease;
         }
+
+    .store-card:hover .img-frame img {
+        transform: scale(1.05);
+    }
+
+    /* Value Proposition Strip */
+    .value-box {
+        border-left: 2px solid var(--border-subtle);
+    }
+    @@media (max-width: 767px) {
+        .value-box {
+            border-left: none;
+            border-top: 2px solid var(--border-subtle);
+        }
+    }
 </style>
 
-<div class="container my-4">
+<div class="container py-4">
 
-    <!-- HERO BANNER (Light tech background with hero devices) -->
-    <section class="hero-section p-4 p-md-5 mb-5 overflow-hidden">
+    <!-- 1. HERO SECTION -->
+    <section class="hero-editorial p-4 p-md-5 mb-5 position-relative overflow-hidden">
         <div class="row align-items-center g-4">
-            <!-- Left Headline & Call to Action -->
-            <div class="col-lg-6 py-lg-4 text-center text-lg-start">
-                <span class="text-secondary small fw-semibold text-uppercase tracking-wide d-block mb-2">
-                    Latest Smartphones
-                </span>
-                <h1 class="display-5 fw-bold text-dark lh-sm mb-3">
-                    Find Your<br />Perfect Phone
+            <div class="col-lg-7 text-center text-lg-start">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-3 rounded-pill bg-white border small text-muted">
+                    <span class="badge bg-dark rounded-pill">Catalog</span>
+                    <span>Curated tech & hardware</span>
+                </div>
+
+                <h1 class="display-4 fw-bold tracking-tight text-dark mb-3" style="letter-spacing: -1.5px; line-height: 1.15;">
+                    Clean essentials,<br />engineered for you.
                 </h1>
-                <p class="text-muted mb-4 fs-6">
-                    Top brands. Best prices. Trusted store.
+
+                <p class="fs-6 text-muted mb-4 pe-lg-5">
+                    Explore high-grade smartphones, accessories, and computing equipment with upfront pricing, certified inspection, and cash on delivery.
                 </p>
-                <div>
-                    <a href="#popular-products" class="btn btn-brand-blue px-4 py-2">
-                        Shop Now
+
+                <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-lg-start">
+                    <a href="#catalog" class="btn btn-dark px-4 py-2 rounded-pill fw-semibold">
+                        Browse Devices
+                    </a>
+                    <a asp-controller="Customer" asp-action="Feedback" class="btn btn-outline-secondary px-4 py-2 rounded-pill fw-semibold">
+                        Support & Desk
                     </a>
                 </div>
             </div>
 
-            <!-- Right Showcase Devices -->
-            <div class="col-lg-6 text-center">
-                <img src="~/images/hero-phones.png"
-                     alt="Smartphones Collection"
-                     class="img-fluid"
-                     style="max-height: 340px; object-fit: contain;"
-                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80';" />
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <div class="p-4 rounded-4 bg-white shadow-sm border text-start mx-auto" style="max-width: 340px;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-light text-dark border px-2 py-1">Quick Metric</span>
+                        <i class="bi bi-shield-check text-success fs-5"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">Direct Procurement</h5>
+                    <p class="text-muted small mb-3">All listed hardware is stock-verified and ready for immediate courier handover.</p>
+                    <hr class="my-2" />
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span>Dispatch SLA:</span>
+                        <strong class="text-dark">24-48 Hours</strong>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- POPULAR PRODUCTS SECTION -->
-    <section id="popular-products" class="pb-5">
-        <!-- Section Header Row -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold text-dark mb-0">Popular Products</h4>
-            <a asp-controller="Customer" asp-action="allProducts" class="text-decoration-none text-secondary small fw-semibold">
-                View All &rarr;
-            </a>
+    <!-- 2. CATEGORY FILTER CHIPS -->
+    @if (categories != null && categories.Any())
+    {
+        <div class="d-flex align-items-center gap-2 pb-3 mb-4 overflow-x-auto text-nowrap">
+            <a asp-controller="Customer" asp-action="Index" class="filter-chip active">All Products</a>
+            @foreach (var cat in categories)
+            {
+                <a asp-controller="Customer" asp-action="productDetails" asp-route-id="@cat.Category_id" class="filter-chip">
+                    @cat.Category_Name
+                </a>
+            }
+        </div>
+    }
+
+    <!-- 3. MAIN CATALOG GRID -->
+    <section id="catalog" class="pb-5">
+        <div class="d-flex justify-content-between align-items-baseline mb-4">
+            <div>
+                <h3 class="fw-bold text-dark mb-1" style="letter-spacing: -0.5px;">Products Available</h3>
+                <span class="text-muted small">Showing latest additions to the store</span>
+            </div>
+            <span class="text-muted small fw-semibold">@(Model?.Count() ?? 0) Total Items</span>
         </div>
 
         @if (Model == null || !Model.Any())
         {
-            <div class="text-center py-5 border rounded-4 bg-white my-3">
-                <div class="text-muted mb-2 fs-1">📱</div>
-                <h6 class="fw-semibold text-secondary">No products available yet</h6>
-                <p class="text-muted small mb-0">Check back later or add devices via the admin dashboard.</p>
+            <div class="text-center py-5 border rounded-4 bg-light my-3">
+                <i class="bi bi-box-seam display-5 text-muted mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark">No records found</h5>
+                <p class="text-muted small mb-0">Check back shortly or visit admin to stock inventory.</p>
             </div>
         }
         else
         {
-            <!-- Product Grid (4 columns on desktop matching the mockup) -->
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                @foreach (var item in Model.Take(8))
+                @foreach (var item in Model)
                 {
                     <div class="col">
-                        <div class="card h-100 product-card p-3 d-flex flex-column justify-content-between">
-                            <!-- Product Image Container -->
-                            <div class="product-img-container mb-2">
+                        <div class="store-card p-3 h-100 d-flex flex-column justify-content-between">
+
+                            <!-- Frame & Image -->
+                            <div class="img-frame mb-3">
                                 @if (!string.IsNullOrEmpty(item.Product_Image))
                                 {
-                                    <img src="@item.Product_Image" alt="@item.Product_Name" />
+                                    <img src="@item.Product_Image" alt="@item.Product_Name" loading="lazy" />
                                 }
                                 else
                                 {
-                                    <div class="text-muted small text-center">
-                                        <i class="bi bi-phone fs-1 d-block mb-1"></i>
-                                        No Image
-                                    </div>
+                                    <i class="bi bi-image text-muted display-6"></i>
                                 }
                             </div>
 
-                            <!-- Product Info -->
-                            <div class="text-start mt-auto">
-                                <h6 class="fw-bold text-dark text-truncate mb-1" title="@item.Product_Name">
+                            <!-- Title & Pricing -->
+                            <div class="flex-grow-1">
+                                <span class="badge bg-light text-muted border small mb-1">In Stock</span>
+                                <h6 class="fw-bold text-dark mb-1 text-truncate" title="@item.Product_Name">
                                     <a asp-controller="Customer" asp-action="productDetails" asp-route-id="@item.product_id" class="text-dark text-decoration-none">
                                         @item.Product_Name
                                     </a>
                                 </h6>
-                                <p class="text-muted fw-semibold small mb-3">
-                                    Rs. @item.Product_Price
-                                </p>
+                                <p class="text-muted small mb-0">Original Retail</p>
+                            </div>
 
-                                <!-- Add / View Details Action -->
-                                <div class="d-grid">
-                                    <a asp-controller="Customer" asp-action="productDetails" asp-route-id="@item.product_id" class="btn btn-outline-dark btn-sm rounded-2 py-1">
-                                        View Details
+                            <!-- Footer / Action Row -->
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-3">
+                                <div>
+                                    <span class="fs-6 fw-bold text-dark">Rs. @item.Product_Price</span>
+                                </div>
+                                <div class="d-flex gap-1">
+                                    <a asp-controller="Customer" asp-action="productDetails" asp-route-id="@item.product_id"
+                                       class="btn btn-sm btn-light border rounded-pill px-3 fw-semibold text-secondary" title="Inspect details">
+                                        View
                                     </a>
+                                    <!-- Direct Add-to-Cart Trigger -->
+                                    <button type="button" class="btn btn-sm btn-dark rounded-circle px-2 py-1" onclick="quickAddToCart(@item.product_id)" title="Add to Cart">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 }
@@ -154,4 +225,45 @@
         }
     </section>
 
+    <!-- 4. SUBTLE VALUE HIGHLIGHTS -->
+    <section class="border rounded-4 bg-white p-4 p-md-5 my-4 shadow-sm">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <h6 class="fw-bold text-dark mb-1"><i class="bi bi-truck me-2 text-primary"></i> Doorstep Courier</h6>
+                <p class="text-muted small mb-0">Inspected packaging with verification available before payment handover.</p>
+            </div>
+            <div class="col-md-4 value-box ps-md-4">
+                <h6 class="fw-bold text-dark mb-1"><i class="bi bi-wallet2 me-2 text-primary"></i> Cash on Delivery</h6>
+                <p class="text-muted small mb-0">No prepayment liability. Settle the order balance directly upon courier arrival.</p>
+            </div>
+            <div class="col-md-4 value-box ps-md-4">
+                <h6 class="fw-bold text-dark mb-1"><i class="bi bi-chat-heart me-2 text-primary"></i> Dedicated Support</h6>
+                <p class="text-muted small mb-0">Direct access to dispute resolution and delivery status queries anytime.</p>
+            </div>
+        </div>
+    </section>
+
 </div>
+
+@section Scripts {
+    <script>
+        function quickAddToCart(productId) {
+            $.ajax({
+                url: '@Url.Action("addToCart", "Customer")',
+                type: 'POST',
+                data: { Prod_id: productId, quantity: 1 },
+                success: function (res) {
+                    if (res.redirectUrl) {
+                        window.location.href = res.redirectUrl;
+                    } else if (res.success) {
+                        // Quick non-intrusive feedback
+                        alert('Added to cart!');
+                    }
+                },
+                error: function () {
+                    alert('Could not add item. Please try again.');
+                }
+            });
+        }
+    </script>
+}
