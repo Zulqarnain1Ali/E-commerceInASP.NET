@@ -8,11 +8,11 @@ A responsive, minimalist full-stack e-commerce web platform built with **ASP.NET
 
 | Customer Storefront | Admin Dashboard |
 | :---: | :---: |
-| ![Storefront Home](screenshots/storefront-home.png) | ![Admin Dashboard](screenshots/admin-dashboard.png) |
+| <img src="https://github.com/user-attachments/assets/11383b8a-b3d1-4c3c-95df-22b44dc7a0ab" alt="Customer Storefront" width="100%" /> | <img src="https://github.com/user-attachments/assets/33001286-e1b3-4c55-9916-7f6e1dbd2955" alt="Admin Dashboard" width="100%" /> |
 
 | Product Details & Cart | Order & Catalog Operations |
 | :---: | :---: |
-| ![Cart & Details](screenshots/cart-details.png) | ![Admin Management](screenshots/admin-management.png) |
+| <img src="https://github.com/user-attachments/assets/9eceda37-199d-42a2-ac08-fe84eaae0336" alt="Product Details & Cart" width="100%" /> | <img src="https://github.com/user-attachments/assets/23b6b132-f491-4758-83b8-b87fea16827d" alt="Order & Catalog Operations" width="100%" /> |
 
 ---
 
