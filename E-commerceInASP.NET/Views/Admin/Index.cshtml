@@ -1,24 +1,278 @@
 @model IEnumerable<E_commerceInASP.NET.Models.Admin>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // or your dedicated Admin layout if you have one
 }
 
-<h1> Admin Dashboard </h1>
+<style>
+    :root {
+        --admin-bg: #f8fafc;
+        --admin-border: #e2e8f0;
+        --admin-text: #0f172a;
+        --admin-muted: #64748b;
+    }
 
-<br /> 
-<br /> 
+    .admin-sidebar {
+        background: #ffffff;
+        border: 1px solid var(--admin-border);
+        border-radius: 16px;
+    }
 
-@* <a href="@Url.Action("Logout", "Admin")" class="btn btn-danger">Logout</a>  *@
-<a asp-controller="Admin" asp-action="Logout" class="btn btn-danger">Logout</a>
-<a asp-controller="Admin" asp-action="Profile" class="btn btn-primary">Edit Profile</a>
-<br /><br />
-<a asp-controller="Admin" asp-action="fetchCustomer" class="btn btn-info"> Customers Data </a>
-<br />
-<a asp-controller="Admin" asp-action="fetchCategory" class="btn btn-dark"> Categories </a>
-<br />
-<a asp-controller="Admin" asp-action="fetchProducts" class="btn btn-primary"> Products </a>
-<br />
-<a asp-controller="Admin" asp-action="fetchFeedback" class="btn btn-primary"> Feedback </a>
-<br />
-<a asp-controller="Admin" asp-action="fetchCart" class="btn btn-primary"> Cart </a>
+    .admin-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        color: var(--admin-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+
+        .admin-nav-item:hover, .admin-nav-item.active {
+            background-color: #f1f5f9;
+            color: var(--admin-text);
+        }
+
+        .admin-nav-item.active {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
+
+    .stat-card {
+        background: #ffffff;
+        border: 1px solid var(--admin-border);
+        border-radius: 16px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+        }
+
+    .action-tile {
+        background: #ffffff;
+        border: 1px solid var(--admin-border);
+        border-radius: 14px;
+        text-decoration: none;
+        color: var(--admin-text);
+        transition: all 0.2s ease;
+    }
+
+        .action-tile:hover {
+            border-color: #0f172a;
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="container-fluid py-4 px-lg-5">
+    <div class="row g-4">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <div class="col-lg-3 col-xl-2">
+            <div class="admin-sidebar p-3 shadow-sm position-sticky" style="top: 90px;">
+                <!-- Admin Bio Badge -->
+                <div class="d-flex align-items-center gap-2 p-2 mb-3 border-bottom pb-3">
+                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-person-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 fw-bold">Admin Panel</h6>
+                        <span class="badge bg-success-subtle text-success small" style="font-size: 0.7rem;">● Online</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="d-flex flex-column gap-1">
+                    <a asp-controller="Admin" asp-action="Index" class="admin-nav-item active">
+                        <i class="bi bi-grid-fill"></i> Dashboard
+                    </a>
+                    <a asp-controller="Admin" asp-action="Profile" class="admin-nav-item">
+                        <i class="bi bi-person-gear"></i> Profile
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchCustomer" class="admin-nav-item">
+                        <i class="bi bi-people"></i> Customers
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchCategory" class="admin-nav-item">
+                        <i class="bi bi-tags"></i> Categories
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchProducts" class="admin-nav-item">
+                        <i class="bi bi-box-seam"></i> Products
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchCart" class="admin-nav-item">
+                        <i class="bi bi-bag-check"></i> Orders & Cart
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchFeedback" class="admin-nav-item">
+                        <i class="bi bi-chat-left-dots"></i> Feedback
+                    </a>
+
+                    <hr class="my-2" />
+
+                    <a asp-controller="Admin" asp-action="Logout" class="admin-nav-item text-danger">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="col-lg-9 col-xl-10">
+            <!-- Header Banner -->
+            <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+                <div>
+                    <h3 class="fw-bold text-dark mb-1">Store Overview</h3>
+                    <p class="text-muted small mb-0">Monitor catalog items, inventory levels, customer activity, and incoming orders.</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a asp-controller="Admin" asp-action="addProduct" class="btn btn-dark btn-sm rounded-pill px-3">
+                        <i class="bi bi-plus-lg me-1"></i> Add Product
+                    </a>
+                    <a asp-controller="Admin" asp-action="addCategory" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                        <i class="bi bi-folder-plus me-1"></i> Add Category
+                    </a>
+                </div>
+            </div>
+
+            <!-- TOP STATS METRIC TILES -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-xl-3">
+                    <div class="stat-card p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="text-muted small fw-semibold text-uppercase">Products</span>
+                            <span class="p-2 rounded-3 bg-light text-dark"><i class="bi bi-box-seam"></i></span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-0">@(ViewBag.TotalProducts ?? "—")</h3>
+                        <small class="text-muted">Total inventory items</small>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="stat-card p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="text-muted small fw-semibold text-uppercase">Customers</span>
+                            <span class="p-2 rounded-3 bg-light text-dark"><i class="bi bi-people"></i></span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-0">@(ViewBag.TotalCustomers ?? "—")</h3>
+                        <small class="text-muted">Registered accounts</small>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="stat-card p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="text-muted small fw-semibold text-uppercase">Orders & Cart</span>
+                            <span class="p-2 rounded-3 bg-light text-dark"><i class="bi bi-bag-check"></i></span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-0">@(ViewBag.TotalOrders ?? "—")</h3>
+                        <small class="text-muted">Active carts & placed orders</small>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-3">
+                    <div class="stat-card p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="text-muted small fw-semibold text-uppercase">Feedback</span>
+                            <span class="p-2 rounded-3 bg-light text-dark"><i class="bi bi-chat-left-dots"></i></span>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-0">@(ViewBag.TotalFeedback ?? "—")</h3>
+                        <small class="text-muted">Submitted inquiries</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK SHORTCUT TILES -->
+            <h5 class="fw-bold text-dark mb-3">Quick Navigation</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <a asp-controller="Admin" asp-action="fetchCart" class="action-tile d-block p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-3 rounded-circle bg-primary bg-opacity-10 text-primary fs-4">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Process Orders</h6>
+                                <p class="text-muted small mb-0">Advance pending orders to shipped or delivered.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a asp-controller="Admin" asp-action="fetchProducts" class="action-tile d-block p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-3 rounded-circle bg-success bg-opacity-10 text-success fs-4">
+                                <i class="bi bi-tag"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Manage Catalog</h6>
+                                <p class="text-muted small mb-0">Update item pricing, stock images, and descriptions.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a asp-controller="Admin" asp-action="fetchFeedback" class="action-tile d-block p-3 p-xl-4 shadow-sm">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="p-3 rounded-circle bg-warning bg-opacity-10 text-warning fs-4">
+                                <i class="bi bi-envelope-paper"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Customer Inquiries</h6>
+                                <p class="text-muted small mb-0">Review feedback submissions and notes.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ADMIN SYSTEM INFO / PROFILE SUMMARY -->
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0">Administrator Accounts</h5>
+                    <a asp-controller="Admin" asp-action="Profile" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                        Edit Credentials
+                    </a>
+                </div>
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3 py-3">ID</th>
+                                    <th class="py-3">Admin Name / User</th>
+                                    <th class="py-3">Email Address</th>
+                                    <th class="text-end pe-3 py-3">Access Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var admin in Model)
+                                {
+                                    <tr>
+                                        <td class="ps-3 fw-bold text-secondary">#@admin.admin_id</td>
+                                        <td class="fw-semibold">@admin.admin_name</td>
+                                        <td class="text-muted">@admin.admin_email</td>
+                                        <td class="text-end pe-3">
+                                            <span class="badge bg-dark rounded-pill px-3 py-2">Super Admin</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-muted small mb-0">Signed in via active administrator session.</p>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
