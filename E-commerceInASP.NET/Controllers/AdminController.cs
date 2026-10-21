@@ -20,11 +20,23 @@ namespace E_commerceInASP.NET.Controllers
             this.context = context;
         }
 
-
         public IActionResult Index()
         {
-            return View();
+            string adminSession = HttpContext.Session.GetString("adminSession");
+        
+            ViewBag.TotalProducts = context.tbl_product.Count();
+            ViewBag.TotalCustomers = context.tbl_customer.Count();
+            ViewBag.TotalOrders = context.tbl_cart.Count();
+            ViewBag.TotalFeedback = context.tbl_feedback.Count();
+
+            var admins = context.tbl_admin.ToList();
+            return View(admins);
         }
+
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
 
         [AllowAnonymous]
         public IActionResult Admin_Login()
