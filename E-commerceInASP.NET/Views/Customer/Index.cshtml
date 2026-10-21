@@ -1,127 +1,157 @@
 ﻿@model IEnumerable<E_commerceInASP.NET.Models.Product>
 
 @{
-    ViewData["Title"] = "Home - Modern Store";
+    ViewData["Title"] = "Mobile Store - Home";
 }
 
-<!-- HERO BANNER -->
-<section class="py-5 bg-dark text-white rounded-3 my-4 shadow-sm">
-    <div class="container py-4 text-center text-lg-start">
+<!-- Custom Inline Tweaks to match the Clean Tech UI -->
+<style>
+    .hero-section {
+        background-color: #f7f9fc;
+        border-radius: 20px;
+    }
+
+    .btn-brand-blue {
+        background-color: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
+        font-weight: 500;
+        border-radius: 8px;
+        transition: all 0.2s ease-in-out;
+    }
+
+        .btn-brand-blue:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+    .product-card {
+        border: 1px solid #edf2f7;
+        border-radius: 16px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background-color: #ffffff;
+    }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+
+    .product-img-container {
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+    }
+
+        .product-img-container img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+</style>
+
+<div class="container my-4">
+
+    <!-- HERO BANNER (Light tech background with hero devices) -->
+    <section class="hero-section p-4 p-md-5 mb-5 overflow-hidden">
         <div class="row align-items-center g-4">
-            <div class="col-lg-7">
-                <span class="badge bg-light text-dark text-uppercase px-3 py-2 fw-semibold mb-3">
-                    New Season Arrivals
+            <!-- Left Headline & Call to Action -->
+            <div class="col-lg-6 py-lg-4 text-center text-lg-start">
+                <span class="text-secondary small fw-semibold text-uppercase tracking-wide d-block mb-2">
+                    Latest Smartphones
                 </span>
-                <h1 class="display-4 fw-bold lh-sm mb-3">
-                    Elevate Your Lifestyle With Curated Essentials.
+                <h1 class="display-5 fw-bold text-dark lh-sm mb-3">
+                    Find Your<br />Perfect Phone
                 </h1>
-                <p class="lead text-white-50 mb-4">
-                    Explore top-rated collections with unmatched quality, transparent pricing, and rapid delivery right to your door.
+                <p class="text-muted mb-4 fs-6">
+                    Top brands. Best prices. Trusted store.
                 </p>
-                <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                    <a href="#featured-products" class="btn btn-light btn-lg px-4 fw-semibold">
-                        Shop Collection
-                    </a>
-                    <a asp-controller="Customer" asp-action="feedback" class="btn btn-outline-light btn-lg px-4">
-                        Contact Support
+                <div>
+                    <a href="#popular-products" class="btn btn-brand-blue px-4 py-2">
+                        Shop Now
                     </a>
                 </div>
             </div>
-            <div class="col-lg-5 text-center d-none d-lg-block">
-                <div class="p-5 border border-secondary rounded-4 bg-black bg-opacity-25">
-                    <h3 class="fw-bold mb-2">Exclusive Deals</h3>
-                    <p class="text-white-50 mb-0">Handpicked items updated weekly.</p>
-                </div>
+
+            <!-- Right Showcase Devices -->
+            <div class="col-lg-6 text-center">
+                <img src="~/images/hero-phones.png"
+                     alt="Smartphones Collection"
+                     class="img-fluid"
+                     style="max-height: 340px; object-fit: contain;"
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=700&q=80';" />
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- VALUE PROPOSITIONS -->
-<section class="py-4 border-bottom mb-5">
-    <div class="container">
-        <div class="row g-4 text-center">
-            <div class="col-md-4">
-                <div class="d-flex align-items-center justify-content-center gap-3">
-                    <div class="fs-2 text-dark">🚚</div>
-                    <div class="text-start">
-                        <h6 class="fw-bold mb-0">Fast & Reliable Delivery</h6>
-                        <small class="text-muted">Swift dispatch straight to your location.</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="d-flex align-items-center justify-content-center gap-3">
-                    <div class="fs-2 text-dark">🛡️</div>
-                    <div class="text-start">
-                        <h6 class="fw-bold mb-0">Verified Quality</h6>
-                        <small class="text-muted">100% authentic and vetted products.</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="d-flex align-items-center justify-content-center gap-3">
-                    <div class="fs-2 text-dark">💬</div>
-                    <div class="text-start">
-                        <h6 class="fw-bold mb-0">Dedicated Support</h6>
-                        <small class="text-muted">Our care team is always here to assist.</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FEATURED PRODUCTS SECTION -->
-<section id="featured-products" class="py-4">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end mb-4">
-            <div>
-                <span class="text-uppercase text-muted fw-bold small">Catalog</span>
-                <h2 class="fw-bold mb-0">Featured Products</h2>
-            </div>
-            <span class="badge bg-secondary px-3 py-2">
-                @(Model?.Count() ?? 0) Items Available
-            </span>
+    <!-- POPULAR PRODUCTS SECTION -->
+    <section id="popular-products" class="pb-5">
+        <!-- Section Header Row -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold text-dark mb-0">Popular Products</h4>
+            <a asp-controller="Customer" asp-action="allProducts" class="text-decoration-none text-secondary small fw-semibold">
+                View All &rarr;
+            </a>
         </div>
 
         @if (Model == null || !Model.Any())
         {
-            <div class="text-center py-5 border rounded bg-light">
-                <div class="text-muted mb-2" style="font-size: 2.5rem;">📦</div>
-                <h5 class="fw-semibold text-secondary">No products in the store yet</h5>
-                <p class="text-muted small mb-0">Add products through the Admin panel to display them here.</p>
+            <div class="text-center py-5 border rounded-4 bg-white my-3">
+                <div class="text-muted mb-2 fs-1">📱</div>
+                <h6 class="fw-semibold text-secondary">No products available yet</h6>
+                <p class="text-muted small mb-0">Check back later or add devices via the admin dashboard.</p>
             </div>
         }
         else
         {
-            <div class="row g-4">
-                @foreach (var item in Model)
+            <!-- Product Grid (4 columns on desktop matching the mockup) -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                @foreach (var item in Model.Take(8))
                 {
-                    <partial name="_ProductCard" model="item" />
+                    <div class="col">
+                        <div class="card h-100 product-card p-3 d-flex flex-column justify-content-between">
+                            <!-- Product Image Container -->
+                            <div class="product-img-container mb-2">
+                                @if (!string.IsNullOrEmpty(item.Product_Image))
+                                {
+                                    <img src="@item.Product_Image" alt="@item.Product_Name" />
+                                }
+                                else
+                                {
+                                    <div class="text-muted small text-center">
+                                        <i class="bi bi-phone fs-1 d-block mb-1"></i>
+                                        No Image
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Product Info -->
+                            <div class="text-start mt-auto">
+                                <h6 class="fw-bold text-dark text-truncate mb-1" title="@item.Product_Name">
+                                    <a asp-controller="Customer" asp-action="productDetails" asp-route-id="@item.product_id" class="text-dark text-decoration-none">
+                                        @item.Product_Name
+                                    </a>
+                                </h6>
+                                <p class="text-muted fw-semibold small mb-3">
+                                    Rs. @item.Product_Price
+                                </p>
+
+                                <!-- Add / View Details Action -->
+                                <div class="d-grid">
+                                    <a asp-controller="Customer" asp-action="productDetails" asp-route-id="@item.product_id" class="btn btn-outline-dark btn-sm rounded-2 py-1">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
         }
-        
-<div class="text-center mt-5">
-    <a asp-controller="Customer" asp-action="allProducts" class="btn btn-outline-dark btn-lg px-5 py-2 fw-semibold">
-        Explore All Products &rarr;
-    </a>
-</div>
-    </div>
-</section>
+    </section>
 
-<!-- CALL TO ACTION / BANNER -->
-<section class="container my-5">
-    <div class="card border-0 bg-light p-4 p-md-5 text-center rounded-3">
-        <h3 class="fw-bold mb-2">Have questions about our catalogue?</h3>
-        <p class="text-muted mb-4 mx-auto" style="max-width: 600px;">
-            Reach out via our customer feedback page or check our location details.
-        </p>
-        <div>
-            <a asp-controller="Customer" asp-action="feedback" class="btn btn-dark px-4 py-2">
-                Leave a Note / Message
-            </a>
-        </div>
-    </div>
-</section>
+</div>
