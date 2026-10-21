@@ -344,23 +344,32 @@ namespace E_commerceInASP.NET.Controllers
         }
 
         [HttpPost]
-        public IActionResult updateProduct(Product product, IFormFile file)
+        public IActionResult updateProduct(Product product, IFormFile? file)
         {
             var existingProduct = context.tbl_product.Find(product.product_id);
+            if (existingProduct == null)
+            {
+                return NotFound();
+            }
 
             if (file != null && file.Length > 0)
             {
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/Product_Image");
+                string uploadDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "Product_Image");
+
                 if (!Directory.Exists(uploadDir))
                 {
                     Directory.CreateDirectory(uploadDir);
                 }
+
                 string filePath = Path.Combine(uploadDir, fileName);
+
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     file.CopyTo(stream);
                 }
+
+                // Update image path with the leading slash
                 existingProduct.Product_Image = "/images/Product_Image/" + fileName;
             }
 

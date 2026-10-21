@@ -12,7 +12,7 @@
                     <h4 class="mb-0">Update Product</h4>
                 </div>
                 <div class="card-body">
-                    <form asp-action="updateProduct" method="post">
+                    <form asp-action="updateProduct" method="post" enctype="multipart/form-data">
                         
                         <input type="hidden" asp-for="product_id" />
                         
@@ -35,11 +35,11 @@
                             <textarea asp-for="Product_Description" class="form-control" placeholder="Enter product Description..." required ></textarea>
                             <span asp-validation-for="Product_Description" class="text-danger"></span>
                         </div>
-                        <div class="col-md-4 mb-3">
-                                <label class="form-label fw-bold">Image File Name</label>
-                                <input type="file" name="file" class="form-control" />
-                                <span asp-validation-for="Product_Image" class="text-danger"></span>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Update Product Image</label>
+                            <input type="file" name="file" class="form-control" accept="image/*" />
+                            <span asp-validation-for="Product_Image" class="text-danger"></span>
+                        </div>
 
                         <div class="d-flex justify-content-between">
                             <a asp-action="fetchProducts" class="btn btn-secondary">Back to List</a>

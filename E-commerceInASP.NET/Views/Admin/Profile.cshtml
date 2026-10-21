@@ -1,78 +1,246 @@
 ﻿@model E_commerceInASP.NET.Models.Admin
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+
 @{
+    ViewData["Title"] = "Account Settings - Admin Profile";
 }
 
-<h1> My Profile </h1>
-
-
-<br /> 
-<br /> 
-
-
-
-<form method="post" asp-action="Profile" enctype="multipart/form-data">
-    <input type="hidden" asp-for="admin_id" />
-
-    <div class="mb-3">
-        <label class="form-label">Admin Name</label>
-        <input asp-for="admin_name" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Email Address</label>
-        <input asp-for="admin_email" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">New Password (Optional)</label>
-        <input asp-for="admin_password" type="password" class="form-control" placeholder="Leave blank to keep current password" />
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Profile Picture</label>
-        <input type="file" name="file" class="form-control" />
-    </div>
-
-
-    @if (!string.IsNullOrEmpty(Model.admin_image))
-    {
-        <div class="mb-3">
-            <label class="form-label">Current Picture</label><br />
-            <img src="@Model.admin_image" width="80" height="80" class="rounded-circle" alt="Profile Picture" />
-        </div>
+<style>
+    .admin-sidebar {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
     }
 
-    <button type="submit" class="btn btn-primary">Save Changes</button>
+    .admin-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 1rem;
+        border-radius: 10px;
+        color: #64748b;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
 
-</form>
+        .admin-nav-item:hover, .admin-nav-item.active {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
 
+        .admin-nav-item.active {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
 
+    .profile-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+    }
 
+    .avatar-preview-box {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #f1f5f9;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+</style>
 
-@* 
+<div class="container-fluid py-4 px-lg-5">
+    <div class="row g-4">
 
-<form asp-action="Profile" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <!-- SIDEBAR NAVIGATION -->
+        <div class="col-lg-3 col-xl-2">
+            <div class="admin-sidebar p-3 shadow-sm position-sticky" style="top: 90px;">
+                <!-- Admin Bio Badge -->
+                <div class="d-flex align-items-center gap-2 p-2 mb-3 border-bottom pb-3">
+                    @if (!string.IsNullOrEmpty(Model?.admin_image))
+                    {
+                        <img src="@Model.admin_image" alt="Admin Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                            <i class="bi bi-person-fill fs-5"></i>
+                        </div>
+                    }
+                    <div>
+                        <h6 class="mb-0 fw-bold text-truncate" style="max-width: 130px;">@(Model?.admin_name ?? "Admin")</h6>
+                        <span class="badge bg-success-subtle text-success small" style="font-size: 0.7rem;">● Online</span>
+                    </div>
+                </div>
 
-    <div class="mb-3">
-        <label asp-for="admin_email" class="form-label"></label>
-        <input asp-for="admin_email" type="email" class="form-control" placeholder="name@example.com" />
-        <span asp-validation-for="admin_email" class="text-danger small"></span>
+                <!-- Navigation Links -->
+                <nav class="d-flex flex-column gap-1">
+                    <a asp-controller="Admin" asp-action="Index" class="admin-nav-item">
+                        <i class="bi bi-grid"></i> Dashboard
+                    </a>
+                    <a asp-controller="Admin" asp-action="Profile" class="admin-nav-item active">
+                        <i class="bi bi-person-gear"></i> Profile
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchCustomer" class="admin-nav-item">
+                        <i class="bi bi-people"></i> Customers
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchCategory" class="admin-nav-item">
+                        <i class="bi bi-tags"></i> Categories
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchProducts" class="admin-nav-item">
+                        <i class="bi bi-box-seam"></i> Products
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchCart" class="admin-nav-item">
+                        <i class="bi bi-bag-check"></i> Orders & Cart
+                    </a>
+                    <a asp-controller="Admin" asp-action="fetchFeedback" class="admin-nav-item">
+                        <i class="bi bi-chat-left-dots"></i> Feedback
+                    </a>
+
+                    <hr class="my-2" />
+
+                    <a asp-controller="Admin" asp-action="Logout" class="admin-nav-item text-danger">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- MAIN FORM WORKSPACE -->
+        <div class="col-lg-9 col-xl-10">
+            <!-- Header Banner -->
+            <div class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom">
+                <div>
+                    <h3 class="fw-bold text-dark mb-1">Account & Security</h3>
+                    <p class="text-muted small mb-0">Update your administrator details, display avatar, and login credentials.</p>
+                </div>
+                <a asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                    &larr; Back to Dashboard
+                </a>
+            </div>
+
+            <!-- Feedback / Error Alerts -->
+            @if (TempData["success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="row g-4">
+                <div class="col-xl-8">
+                    <div class="profile-card p-4 p-md-5 shadow-sm">
+                        <form method="post" asp-action="Profile" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="admin_id" />
+                            <input type="hidden" asp-for="admin_image" />
+
+                            <!-- Current Avatar Preview -->
+                            <div class="d-flex align-items-center gap-4 mb-4 pb-4 border-bottom">
+                                @if (!string.IsNullOrEmpty(Model?.admin_image))
+                                {
+                                    <img src="@Model.admin_image" id="avatarPreview" alt="Profile" class="avatar-preview-box" />
+                                }
+                                else
+                                {
+                                    <div id="avatarFallback" class="avatar-preview-box bg-light d-flex align-items-center justify-content-center text-muted">
+                                        <i class="bi bi-person display-6"></i>
+                                    </div>
+                                    <img src="#" id="avatarPreview" alt="Profile" class="avatar-preview-box d-none" />
+                                }
+                                <div>
+                                    <h6 class="fw-bold mb-1">Profile Photo</h6>
+                                    <p class="text-muted small mb-2">Accepts JPG, JPEG, or PNG files.</p>
+                                    <label class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                                        <i class="bi bi-upload me-1"></i> Choose New Photo
+                                        <input type="file" name="file" id="imageInput" class="d-none" accept="image/*" onchange="previewImage(this);" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Administrator Name -->
+                            <div class="mb-3">
+                                <label asp-for="admin_name" class="form-label fw-semibold small text-dark">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                                    <input asp-for="admin_name" class="form-control border-start-0 ps-0" placeholder="e.g. John Doe" required />
+                                </div>
+                                <span asp-validation-for="admin_name" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Administrator Email -->
+                            <div class="mb-3">
+                                <label asp-for="admin_email" class="form-label fw-semibold small text-dark">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-envelope"></i></span>
+                                    <input asp-for="admin_email" type="email" class="form-control border-start-0 ps-0" placeholder="admin@store.com" required />
+                                </div>
+                                <span asp-validation-for="admin_email" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Password Update -->
+                            <div class="mb-4">
+                                <label asp-for="admin_password" class="form-label fw-semibold small text-dark">Change Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-key"></i></span>
+                                    <input asp-for="admin_password" type="password" value="" class="form-control border-start-0 ps-0" placeholder="Leave empty to keep existing password" />
+                                </div>
+                                <div class="form-text text-muted small">Only enter text here if you intend to reset your active login key.</div>
+                                <span asp-validation-for="admin_password" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                                <a asp-controller="Admin" asp-action="Index" class="btn btn-light rounded-pill px-4">
+                                    Cancel
+                                </a>
+                                <button type="submit" class="btn btn-dark rounded-pill px-4 fw-semibold">
+                                    <i class="bi bi-check2 me-1"></i> Save Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Info / Help Panel -->
+                <div class="col-xl-4">
+                    <div class="profile-card p-4 shadow-sm bg-light mb-3">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-shield-lock text-primary me-2"></i>Security Policy</h6>
+                        <p class="text-muted small mb-0">
+                            Changes made to administrative emails or passwords take effect immediately across all active browser login sessions.
+                        </p>
+                    </div>
+
+                    <div class="profile-card p-4 shadow-sm bg-white">
+                        <h6 class="fw-bold text-dark mb-2"><i class="bi bi-clock-history text-muted me-2"></i>Access Level</h6>
+                        <p class="text-muted small mb-2">Role: <strong class="text-dark">Super Administrator</strong></p>
+                        <p class="text-muted small mb-0">Permissions: Full catalog editing, customer management, inventory control, and order fulfillment.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 
-    <div class="mb-3">
-        <label asp-for="admin_password" class="form-label"></label>
-        <input asp-for="admin_password" type="password" class="form-control" placeholder="Enter password" />
-        <span asp-validation-for="admin_password" class="text-danger small"></span>
-    </div>
+@section Scripts {
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var preview = document.getElementById('avatarPreview');
+                    var fallback = document.getElementById('avatarFallback');
 
-    <div class="form-check mb-3">
-        <input type="checkbox" name="rememberMe" value="true" class="form-check-input" id="rememberMeCheck" />
-        <label class="form-check-label" for="rememberMeCheck">Remember Me</label>
-    </div>
-
-    <button type="submit" class="btn btn-primary w-100">Sign In</button>
-</form> *@
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    if (fallback) {
+                        fallback.classList.add('d-none');
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}
