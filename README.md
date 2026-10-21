@@ -1,57 +1,106 @@
-# E-Commerce Web Application in ASP.NET Core MVC
+# Mobile Store — Full-Stack E-Commerce Web Application
 
-A full-stack e-commerce web platform built with ASP.NET Core MVC and Entity Framework Core. The system features separate customer storefront workflows and admin management panels, incorporating dynamic shopping carts, order status tracking, session-based authentication, and feedback management.
-
----
-
-## Key Features
-
-### Customer Storefront
-* **Product Catalog & Browsing**: Browse items categorized with real-time product details and image previews.
-* **Shopping Cart Management**: Add products to cart, increment/decrement quantities inline, and remove items with dynamic subtotal recalculation.
-* **Auto-Filled Checkout**: Session-authenticated customers enjoy streamlined checkout with pre-populated name and contact details.
-* **Cash on Delivery (COD) Flow**: Transparent order placement with dedicated confirmation screens.
-* **Customer Feedback**: Submit product and service inquiries directly via the integrated contact module.
-
-### Admin Dashboard
-* **Product & Category CRUD**: Full management of store inventory, image paths, and category hierarchies.
-* **Cart & Order Lifecycle Management**: Track user activity and transition order statuses via forward/revert controls:
-  * `0`: In Cart (Active browsing)
-  * `1`: Order Placed / Pending
-  * `2`: Processed / Shipped
-  * `3`: Delivered / Closed
-* **Business Metrics & Analytics**: Real-time summary cards displaying active carts, pending orders, completed deliveries, and total store revenue.
-* **Customer & Feedback Moderation**: Review registered accounts and read incoming customer feedback.
+A responsive, minimalist full-stack e-commerce web platform built with **ASP.NET Core MVC** and **Entity Framework Core**. The application features separated architectures for a public customer-facing storefront and a dedicated administrative operations portal with cookie-based authentication, real-time cart logic, catalog management, and media uploads.
 
 ---
 
-## Tech Stack
+### Project Screenshots
 
-* **Framework**: ASP.NET Core (.NET 8 / .NET 9) MVC
-* **ORM / Database Access**: Entity Framework Core (Code-First / DbContext)
-* **Database**: Microsoft SQL Server / LocalDB
-* **Frontend**: Razor Views (CSHTML), Bootstrap 5, HTML5, CSS3, JavaScript
-* **State Management**: ASP.NET Core Session State
+| Customer Storefront | Admin Dashboard |
+| :---: | :---: |
+| ![Storefront Home](screenshots/storefront-home.png) | ![Admin Dashboard](screenshots/admin-dashboard.png) |
+
+| Product Details & Cart | Order & Catalog Operations |
+| :---: | :---: |
+| ![Cart & Details](screenshots/cart-details.png) | ![Admin Management](screenshots/admin-management.png) |
 
 ---
 
-## Project Architecture
+### Key Features
 
+#### 1. Customer Storefront
+- **Dynamic Catalog**: Category filtering and real-time inventory inspection.
+- **Cart Management**: AJAX-enabled cart additions, quantity modifiers, and price totals calculation.
+- **Order Pipeline**: Integrated checkout flow tracking orders across defined lifecycle statuses (`0: In-Cart`, `1: Pending`, `2: Shipped`, `3: Delivered`).
+- **Support & Inquiries**: Dedicated customer feedback submission forms and FAQ reference modules.
+
+#### 2. Admin Management Portal
+- **Operational Dashboard**: Live database metrics summarizing total products, registered accounts, active orders, and pending feedback.
+- **Decoupled Architecture**: Isolated administrative layout (`_AdminLayout.cshtml`) complete with sidebar navigation, active route indicators, and dedicated management controls.
+- **Cookie Authentication**: Secure authentication with persistent login sessions (`rememberMe`) and claims-based identity resolution.
+- **Product & Category CRUD**: Full lifecycle management with multipart file uploads for product assets and local storage synchronization.
+- **Profile Configuration**: Live administrative avatar preview and credentials management.
+
+---
+
+### Tech Stack & Architecture
+
+- **Framework**: ASP.NET Core MVC (.NET 8 / .NET 9)
+- **Database Engine**: Microsoft SQL Server
+- **ORM**: Entity Framework Core (Code-First Migrations)
+- **Frontend / Styling**: Razor Views (`.cshtml`), Bootstrap 5, Bootstrap Icons, Custom CSS
+- **Authentication**: Cookie Authentication (`Microsoft.AspNetCore.Authentication.Cookies`)
+- **Asset Handling**: Physical file persistence in `wwwroot/images/`
+
+---
+
+
+## Database Schema Overview
+
+The entity data layer configured via `MyContext` manages the following operational tables:
+
+| Entity | Primary Key | Key Responsibilities |
+| :--- | :--- | :--- |
+| **tbl_admin** | `admin_id` | Stores administrator credentials, names, and profile media. |
+| **tbl_customer** | `customer_id` | Stores customer contact details, accounts, and session data. |
+| **tbl_product** | `product_id` | Stores product details, pricing, image references, and category foreign keys. |
+| **tbl_category** | `Category_id` | Groups catalog items for filtering and storefront navigation. |
+| **tbl_cart** | `cart_id` | Manages active cart items, ordered quantities, and fulfillment stages (0 to 3). |
+| **tbl_feedback** | `feedback_id` | Captures customer inquiries, support messages, and timestamps. |
+| **tbl_faq** | `faq_id` | Stores general store policies and customer help data. |
+
+---
+
+## Getting Started
+
+### Prerequisites
+* .NET SDK 8.0 or 9.0
+* Microsoft SQL Server (or LocalDB / Express)
+* Visual Studio 2022 or Visual Studio Code
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/your-username/E-commerceInASP.NET.git](https://github.com/your-username/E-commerceInASP.NET.git)
+cd E-commerceInASP.NET
+
+---
+
+### Solution Structure
 ```text
-E_commerceInASP.NET/
+E-commerceInASP.NET/
 ├── Controllers/
-│   ├── AdminController.cs          # Admin inventory, cart & order moderation
-│   └── CustomerController.cs       # Customer store, cart, checkout & feedback
+│   ├── AdminController.cs          # Dashboard, catalog, orders, and authentication logic
+│   └── CustomerController.cs       # Storefront, cart operations, feedback, and catalog views
+├── Migrations/                     # EF Core database migration snapshots
 ├── Models/
-│   ├── Cart.cs                     # Cart item model & status flags
-│   ├── Category.cs                 # Product categories
+│   ├── Admin.cs                    # Administrator accounts & authentication fields
+│   ├── Cart.cs                     # Shopping cart items & order status tracking
+│   ├── Category.cs                 # Catalog product categories
 │   ├── Customer.cs                 # Registered customer accounts
-│   ├── Feedback.cs                 # Customer feedback submissions
-│   ├── MyContext.cs                # EF Core DbContext
-│   └── Product.cs                  # Store items and pricing details
+│   ├── ErrorViewModel.cs           # Error handling models
+│   ├── FAQ.cs                      # Help & store inquiries
+│   ├── Feedback.cs                 # Customer support inquiries & notes
+│   ├── MyContext.cs                # Entity Framework database context
+│   └── Product.cs                  # Product catalog records & media references
 ├── Views/
-│   ├── Admin/                      # Back-office views (fetchCart, CRUD screens)
-│   ├── Customer/                   # Storefront views (viewCart, checkout, orderSuccess)
-│   └── Shared/                     # Navigation layouts and partials
-├── wwwroot/                        # Static assets (CSS, JS, product images)
-└── appsettings.json                # Database connection strings and configs
+│   ├── Admin/                      # Administrative views (Dashboard, Products, Profile, etc.)
+│   ├── Customer/                   # Storefront views (Index, ViewCart, Checkout, Details)
+│   └── Shared/
+│       ├── _AdminLayout.cshtml     # Dedicated admin portal layout & sidebar
+│       ├── _Layout.cshtml          # Public customer storefront layout
+│       ├── _ViewImports.cshtml     # Shared tag helpers & namespaces
+│       └── _ViewStart.cshtml       # Layout initialization
+├── wwwroot/                        # Static assets (CSS, JS, vendor libs, uploaded images)
+├── appsettings.json                # Connection strings & configuration settings
+└── Program.cs                      # App pipeline, dependency injection, and auth services
+
