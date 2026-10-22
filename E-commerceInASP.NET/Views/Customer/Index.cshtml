@@ -154,6 +154,7 @@
     }
 
     <!-- 3. MAIN CATALOG GRID -->
+    <!-- 3. MAIN CATALOG GRID -->
     <section id="catalog" class="pb-5">
         <div class="d-flex justify-content-between align-items-baseline mb-4">
             <div>
@@ -222,6 +223,14 @@
                         </div>
                     </div>
                 }
+            </div>
+
+            <!-- View All Products Button -->
+            <div class="text-center mt-5">
+                <a asp-controller="Customer" asp-action="AllProducts" class="btn btn-outline-dark px-4 py-2 rounded-pill fw-semibold shadow-sm d-inline-flex align-items-center gap-2">
+                    <span>View All Products</span>
+                    <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
         }
     </section>
